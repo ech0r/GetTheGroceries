@@ -1,0 +1,29 @@
+<div id="ingredient_field">
+            <div class="col-sm-4 nopadding">
+                <div class="form-group">
+                    {{ render_field(form.ingredient, class="form-control") }}
+                </div>
+            </div>
+            <div class="col-sm-3 nopadding">
+                <div class="form-group">
+                    {{ render_field(form.amount, class="form-control") }}
+                </div>
+            </div>
+            <div class="col-sm-3 nopadding">
+                <div class="form-group">
+                    <div class="input-group">
+                        {{ render_field(form.unit, class="form-control") }}
+                         <div class="input-group-btn">
+                             <div class="input-group-btn">
+                                 <button class="btn btn-danger" type="button" onclick="remove_ingredient_fields('+ room +');">
+                                 <span class="glyphicon glyphicon-minus" aria-hidden="true">
+
+                                 </span>
+                                 </button>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+</div>
+

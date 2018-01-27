@@ -11,7 +11,7 @@ app.debug = True
 #Config MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'yourpasswordhere'
+app.config['MYSQL_PASSWORD'] = 'Ilovemealplanning1[]'
 app.config['MYSQL_DB'] = 'MealPlanner'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
@@ -133,8 +133,8 @@ def dashboard():
 class RecipeForm(Form):
     title = StringField('Title', [validators.Length(min=1, max=200)])
     description = TextAreaField('Description', [validators.Length(min=30)])
-    ingredient = StringField('Ingredient', [validators.Length(min=1, max=200)])
-    amount = StringField('Amount', [validators.Length(min=1, max=5)])
+    ingredient = StringField('Ingredient', [validators.Length(min=1, max=200)], render_kw={"placeholder": "Ingredient Name"})
+    amount = StringField('Amount', [validators.Length(min=1, max=5)], render_kw={"placeholder": "Amount"})
     unit = SelectField(u'Unit of Measurement', choices=[('kg', 'kg'),
                                                         ('g', 'g'),
                                                         ('ml', 'ml'),
@@ -152,13 +152,20 @@ class RecipeForm(Form):
 @is_logged_in
 def add_recipe():
     form = RecipeForm(request.form)
+
+    amount = []
+    unit = []
     if request.method == 'POST' and form.validate():
         user = session['username']
         title = form.title.data
         description = form.description.data
-        ingredient = form.ingredient.data
-        amount = form.amount.data
-        unit = form.amount.data
+        ingredient = form.getlist('ingredient')
+        amount = form.getlist('amount')
+        unit = form.getlist('unit')
+
+        print(ingredient)
+        print(amount)
+        print(unit)
 
         #create cursor
         cur = mysql.connection.cursor()
@@ -185,5 +192,5 @@ def add_recipe():
 
 
 if __name__ == '__main__':
-    app.secret_key='thisiswherethesecrekeygoes'
+    app.secret_key='bingbongdingdong123'
     app.run()

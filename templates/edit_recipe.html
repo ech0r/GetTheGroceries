@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+
+{% block body %}
+    <script src="/static/js/edit_ingredient.js"></script>
+    <h1>Edit Recipe</h1>
+    {% from "includes/_formhelpers.html" import render_field %}
+    <form method="POST">
+        <div class="form-group">
+            {{ render_field(form.title, class_="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(form.description, class_="form-control") }}
+        </div>
+        <div class="panel panel-default">
+        <div class="panel-heading">Ingredients</div>
+        <div class="panel-body" id="ingredient_body">
+            <div class="col-xs-4 nopadding">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="ingr_name" id="name" value="{{ ingredients[0] }}" required>
+                </div>
+            </div>
+            <div class="col-xs-3 nopadding">
+                <div class="form-group">
+                    <input type="number" step="0.01" min="0" max="999" class="form-control" name="amount" id="amount" value="{{ amounts[0] }}" required>
+                </div>
+            </div>
+            <div class="col-xs-3 nopadding">
+                <div class="form-group">
+                    <div class="input-group">
+                        <select name="unit" class="form-control" value="{{ units[0] }}">
+                            {% for type in unittype %}
+                                <option>{{ type }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="input-group-btn">
+                            <button class="btn btn-success" type="button" onclick="add_ingredient_fields();" id="add-button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+                <script>
+                    var ingredients = {{ ingredients[1:]|tojson }};
+                    var amounts = {{ amounts[1:]|tojson}};
+                    var units = {{ units[1:]|tojson }};
+                    edit_ingredient_fields(ingredients, amounts, units);
+                </script>
+
+        </div>
+        <div>
+        <p><input class="btn btn-primary" type="submit" value="Submit"></p>
+    </div>
+    </form>
+
+
+
+{% endblock %}

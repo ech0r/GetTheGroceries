@@ -17,3 +17,6 @@ body, html {
 #big-container {
     padding: 50px;
 }
+.top-buffer {
+    margin-top: 50px;
+}

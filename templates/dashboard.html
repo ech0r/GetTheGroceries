@@ -1,46 +1,51 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="panel panel-default" style="background-color: #F8F8F8; padding: 20px;">
-    <h1>Welcome {{session.username}}!</h1>
-    <hr>
-    <div class="container-fluid">
+<script src="static/js/pdfkit.js"></script>
+<div class="card mx-auto border-dark mb-3" style="max-width: 80%;">
+    <div class="card-body">
+        <h4 class="card-title">Welcome {{session.username}}!</h4>
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col">
                 <div class="btn-group" role="group">
-                    <a type="button" class="btn btn-success" href="/add_recipe">Add Recipe</a>
+                        <a type="button" class="btn btn-outline-secondary btn-sm" href="/add_recipe">Add Recipe</a>
                 </div>
+            </div>
+            <div class="col">
+                 <form class="form-inline" role="form">
+                    <div class="btn-group col" role="group">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="recipeList()">Shuffle Recipes</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="createList()">Get Shopping List</a>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" id="sel1">
+                            {% for i in range(14) %}
+                                <option>{{i+1}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div> <!end of top row>
+        <div class="row">
+            <div class="col">
                 <hr>
                 <h4>Your Current Recipe Bank:</h4>
                 <div class="pre-scrollable list-group" style="overflow-x:hidden;" id="recipebank" role="tablist">
                     {% for name in names %}
-                    <div class="row list-group-item list-group-item-action" data-toggle="list" style=" background-color: #F8F8F8;" id="recipe{{loop.index}}">
-                        <a class="col-xs-6" id="recipe{{ loop.index }}">{{loop.index}}.  {{name}}</a>
-
-                        <span class="pull-right">
-                            <div class="btn-group" role="group">
-                                <button type="button" id="{{ name }}_edit"   onclick="editRecipe('{{ name }}')"    class="btn btn-primary btn-sm">Edit</button>
-                                <button type="button" id="{{ name }}_delete" onclick="deleteRecipe('{{ name }}')" class="btn btn-danger btn-sm">Delete</button>
-                            </div>
-                        </span>
-                    </div>
+                    <form class="form-inline">
+                        <div class="row list-group-item list-group-item-action"  style="background-color: #F8F8F8;" id="recipe{{loop.index}}">
+                             <td id="recipe{{ loop.index }}">{{loop.index}}.  {{name}}</td>
+                             <div class="btn-group float-right" role="group">
+                                <a type="button" id="{{ name }}_edit"   onclick="editRecipe('{{ name }}')" style="background-color:  #abb2b9;" class="btn btn-primary btn-sm">Edit</a>
+                                <a type="button" id="{{ name }}_delete" onclick="deleteRecipe('{{ name }}')" style="background-color:  #f1948a;" class="btn btn-danger btn-sm">Delete</a>
+                             </div>
+                        </div>
+                     </form>
                      {% endfor %}
                 </div>
             </div>
-            <div class="col-xs-6">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-success" onclick="recipeList()">Shuffle Recipes</button>
-                    <button type="button" class="btn btn-primary" onclick="getList()">Get Shopping List</button>
-                </div>
-                <span class="pull-right">
-                    <div class="form-group">
-                            <select class="form-control" id="sel1">
-                                {% for i in range(14) %}
-                                <option>{{i+1}}</option>
-                                {% endfor %}
-                            </select>
-                    </div>
-                </span>
+            <div class="col">
                 <hr>
                 <h4>Your Current Meal Plan:</h4>
                 <div class="pre-scrollable list-group" style="overflow-x:hidden;" id="mealplan" role="tablist">
@@ -50,9 +55,9 @@
     </div>
 </div>
 <script src="/static/js/recipe_list.js"></script>
-<script src="/static/js/jquery.js"></script>
 <script>
     var recipeBankNames = {{ names|tojson }};
     var recipeBankDesc = {{ descriptions|tojson }};
+    var recipedict = {{ recipedict|tojson }};
 </script>
 {% endblock%}

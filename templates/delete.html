@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div class="card mx-auto border-dark mb-3" style="max-width: 40%; min-width: 30em">
+    <div class="card-body">
+    <h1 class="card-title">Delete Account</h1>
+        <form action="" method="POST">
+            <div class="form-group">
+                <label>Type 'delete' in the field below to permanently delete your account.</label>
+                <input type="text" name="delete" class="form-control" value={{request.form.delete}}>
+            </div>
+            <button type="submit" name="delete" value="submit" class="btn btn-outline-danger">Delete Account</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

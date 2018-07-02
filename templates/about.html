@@ -1,13 +1,31 @@
 {% extends 'layout.html' %}
 {% block body %}
-<div class="card mx-auto border-dark mb-3" style="max-width: 80%; min-width: 30em">
-<h1 class="card-title text-center">About</h1>
+<div class="card mx-auto border-dark mb-3" style="padding: 1em; max-width: 80%; min-width: 30em">
+<h5 class="card-title text-center">About Us</h5>
     <div class="card-body">
-        <p>This web application is designed to solve the perpetual question of 'What's for dinner?' It facilitates meal planning and shopping for busy households.</p>
-        <p>This application will always be free.</p>
-        <p>We will <b>never</b> sell or distribute your information to anyone. We take privacy very seriously. We only ask for your email address to enable account recovery.</p>
-        <p>Any questions, concerns, and feature suggestions are always welcome. You can get in touch via our contact page.</p>
-        <p>If you find this service useful, consider making a donation to ameliorate hosting costs.</p>
+        <ul class="list-group">
+            <li class="list-group-item">This service is designed to facilitate meal planning and shopping for busy families. Specifically lunch/dinner, since breakfast items tend to stay the same week to week.</li>
+            <li class="list-group-item">Simply enter in your favorite recipes to create a database of recipes to make shopping lists from in the future.</li>
+            <li class="list-group-item">Shuffle to create a new meal plan, and print out your shopping list.</li>
+            <li class="list-group-item">Once you've built a set of recipes you like, you can come back any time and make a new meal plan and shopping list whenever you need one.</li>
+            <li class="list-group-item">We will <b>never</b> sell or distribute your information to anyone. We take privacy very seriously. We only ask for an email address in order to enable account recovery.</li>
+            <li class="list-group-item">Any questions, concerns, and feature suggestions are always welcome. You can get in touch via our <a href="/contact"><b>contact</b></a> page.</li>
+            <li class="list-group-item list-group-item-success">If you find this service useful, consider making a donation to ameliorate hosting costs.</li>
+        </ul>
+        <p class="text-center" style="padding: 1em"><b>BTC: </b>16vRRLNNJjs4nCb9mE85gBjKZGZ3VdjV7s</p>
+        <h5 class="text-center">How-To</h5>
+         <ul class="list-group">
+            <li class="list-group-item"> 1. Create an Account.</li>
+            <li class="list-group-item"> 2. Confirm/Activate your account via email.</li>
+            <li class="list-group-item"> 3. Log in.</li>
+             <li class="list-group-item"> 4. Enter recipes you like to make from the '<b>Dashboard</b>' using the '<b>Add Recipe</b>' button. (for best results enter more recipes than the number of days you normally shop for at once) <b>NOTE: This step is only required one time</b>.</li>
+            <li class="list-group-item"> 5. Select the number of days you'd like to shop for this time from the dropdown box.</li>
+            <li class="list-group-item"> 6. Hit the '<b>Shuffle Recipes</b>' button on the <b>Dashboard</b> until satisfied with the current mealplan.</li>
+            <li class="list-group-item"> 7. Hit the '<b>Get Shopping List</b>' button on the <b>Dashboard</b>.</li>
+            <li class="list-group-item"> 8. Print or save your shopping list.</li>
+            <li class="list-group-item"> 9. Go Shop!</li>
+        </ul>
     </div>
 </div>
+
 {% endblock %}

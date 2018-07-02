@@ -6,11 +6,11 @@
     <link rel="stylesheet" type="text/css" href="/static/bootstrap-4.0.0-dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/static/css/layout.css">
     <link rel="stylesheet" type="text/css" href="/static/bootstrap-4.1.1-dist/css/fontawesome-all.min.css">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <script type="text/javascript" src="/static/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/static/bootstrap-4.1.1-dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/static/bootstrap-confirmation/bootstrap-confirmation.js"></script>
-
 <body class="bg">
 {% include 'includes/_navbar.html' %}
 <div class="top-buffer">
@@ -18,4 +18,8 @@
 {% block body %}{% endblock %}
 </div>
 </body>
+<script type="text/javascript">
+ var images = ['pexels-photo-349609.jpeg', 'pexels-photo-349610.jpeg', 'pexels-photo-459469.jpeg', 'pexels-photo-616330.jpeg', 'pexels-photo-616358.jpeg', 'pexels-photo-616404.jpeg', 'pexels-photo-616409.jpeg', 'pexels-photo-616412.jpeg', 'pexels-photo-717130.jpeg'];
+ $('.bg').css({'background-image': 'url(/static/images/' + images[Math.floor(Math.random() * images.length)] + ')'});
+</script>
 </html>

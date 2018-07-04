@@ -6,13 +6,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7658102-bdac-4e92-bd00-bae6a6f6ae08" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/oldregister.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/pdf_template.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/register-manual.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/shoppinglist.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -125,7 +119,7 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="622">
+            <state relative-caret-position="10115">
               <caret line="595" column="23" selection-start-line="595" selection-start-column="23" selection-end-line="595" selection-end-column="23" />
               <folding>
                 <element signature="e#0#99#0" expanded="true" />
@@ -218,7 +212,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="952" />
     <option name="width" value="977" />
     <option name="height" value="1038" />
@@ -744,7 +738,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="622">
+        <state relative-caret-position="10115">
           <caret line="595" column="23" selection-start-line="595" selection-start-column="23" selection-end-line="595" selection-end-column="23" />
           <folding>
             <element signature="e#0#99#0" expanded="true" />

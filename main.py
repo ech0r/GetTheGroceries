@@ -27,10 +27,10 @@ app.config.update(dict(
 mail = Mail(app)
 
 # Init MySQL
-db1 = MySQLdb.connect(host="localhost", user="root", passwd="Ilovemealplanning1[]")
+db1 = MySQLdb.connect(host="mysql-docker", user="root", passwd="Ilovemealplanning1[]")
 cursor1 = db1.cursor()
-sql0 = "USE getthegroceries;"
-sql1 = "CREATE DATABASE IF NOT EXISTS getthegroceries;"
+sql0 = "CREATE DATABASE IF NOT EXISTS getthegroceries;"
+sql1 = "USE getthegroceries;"
 sql2 = "CREATE TABLE IF NOT EXISTS newusers(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), username VARCHAR(30), password VARCHAR(100), confirmation VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
 sql3 = "CREATE TABLE IF NOT EXISTS verifiedusers(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), username VARCHAR(30), password VARCHAR(100), recovery VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
 sql4 = "CREATE TABLE IF NOT EXISTS recipes(recipe_id INT(11) AUTO_INCREMENT PRIMARY KEY, user_id INT(11), title VARCHAR(255), description TEXT, date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
@@ -593,4 +593,4 @@ def add_recipe():
 
 if __name__ == '__main__':
     app.secret_key = 'bingbongdingdong123'
-    app.run('0.0.0.0', 80, True)
+    app.run('0.0.0.0', 5001, True)

@@ -5,11 +5,8 @@ from passlib.hash import pbkdf2_sha256
 from functools import wraps
 import MySQLdb
 import random
-import pdfkit
 import json
 
-path_wkthmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 
 app = Flask(__name__)
 app.debug = True
@@ -178,44 +175,6 @@ def index():
     return render_template('home.html')
 
 
-@app.route('/get_list')
-@is_logged_in
-def getlist():
-    cursor = db1.cursor()
-    user_id = session.get('userid', None)
-    mealplannames = session.get('mealplannames', None)
-    sql1 = "SELECT * FROM recipes WHERE user_id=%s AND title=%s"
-    sql2 = "SELECT * FROM ingredients WHERE recipe_id=%s"
-    recipes = []
-    descriptions = []
-    ingredients = []
-    amounts = []
-    units = []
-    newingredients = []
-    newamounts = []
-    newunits = []
-    for name in mealplannames:
-        cursor.execute(sql1, [user_id, name])
-        data = cursor.fetchone()
-        recipe_id = data[0]
-        recipes.append(data[2])
-        descriptions.append(data[3])
-        cursor.execute(sql2, [recipe_id])
-        for i, row in enumerate(cursor.fetchall()):
-            ingredients.append(row[3])
-            amounts.append(row[4])
-            units.append(row[5])
-        ingredients = [x.lower() for x in ingredients]
-    for i in range(len(ingredients)):
-        for j in range(len(ingredients)):
-            if ingredients[i] == ingredients[j]:
-                if units[i] == units[j]:
-                    newingredients.append(ingredients[i])
-                    newamounts.append(amounts[i])
-                    newunits.append(units[i])
-    return render_template('dashboard.html', names=recipes, descriptions=descriptions, ingredients=newingredients, amounts=newamounts, units=newunits)
-
-
 @app.route('/edit_recipe', methods=['GET', 'POST'])
 @is_logged_in
 def edit_recipe():
@@ -341,7 +300,7 @@ def register():
             # Commit to DB
             db1.commit()
             cursor.close()
-            message = "Click the link below to activate your account: \n\n" + "http://localhost:5000/confirm?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
+            message = "Click the link below to activate your account: \n\n" + "https://getthegroceries.io/confirm?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
             msg = Message(subject="Get The Groceries Account Confirmation", body=message,
                           sender='getthegroceries.io@gmail.com', recipients=[email])
             mail.send(msg)
@@ -548,7 +507,7 @@ def forgot():
             updateuser = "UPDATE verifiedusers SET recovery = %s WHERE id = %s"
             cursor.execute(updateuser, [key, result])
             # send user email with recovery key
-            message = "Click here to reset your password: \n\n" + "http://localhost:5000/reset?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
+            message = "Click here to reset your password: \n\n" + "https://getthegroceries.io/reset?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
             msg = Message(subject="Get The Groceries Password Reset", body=message, sender='getthegroceries.io@gmail.com', recipients=[email[0]])
             mail.send(msg)
             flash("User account exists. Sent email to reset password.", 'success')
@@ -634,4 +593,4 @@ def add_recipe():
 
 if __name__ == '__main__':
     app.secret_key = 'bingbongdingdong123'
-    app.run()
+    app.run('0.0.0.0', 80, True)

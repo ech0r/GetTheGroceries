@@ -268,7 +268,7 @@ def about():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    if request.method == 'POST':
+    if request.method == 'POST' and recaptcha.verify():
         message = request.form['message']
         email = request.form['email']
         subject = request.form['subject']
@@ -276,6 +276,8 @@ def contact():
         msg = Message(subject=subject, body=message, sender='getthegroceries.io@gmail.com', recipients=['admin@getthegroceries.io'])
         mail.send(msg)
         flash('Email sent successfully. Thanks for contacting us, we will be in touch soon.', 'success')
+    elif not recaptcha.verify():
+        flash('Make sure recaptcha is completed correctly.', 'danger')
     return render_template('contact.html')
 
 
@@ -317,8 +319,8 @@ def register():
                           sender='getthegroceries.io@gmail.com', recipients=[email])
             mail.send(msg)
             flash('You are now registered. Please check your email to activate your account', 'success')
-    else:
-        flash('Make sure captcha is completed correctly.','danger')
+    elif not recaptcha.verify():
+        flash('Make sure recaptcha is completed correctly.', 'danger')
     cursor.close()
     return render_template('register.html', form=form)
 
@@ -360,8 +362,8 @@ def login():
             error = 'Username not found'
             return render_template('login.html', error=error)
         cursor.close()
-    else:
-        flash('Make sure captcha is completed correctly.','danger')
+    elif not recaptcha.verify():
+        flash('Make sure recaptcha is completed correctly.', 'danger')
     return render_template('login.html')
 
 
@@ -531,8 +533,8 @@ def forgot():
             flash("User account does not exist. Try again.", 'danger')
         db1.commit()
         cursor.close()
-    else:
-        flash('Make sure captcha is completed correctly.', 'Danger')
+    elif not recaptcha.verify():
+        flash('Make sure captcha is completed correctly.', 'danger')
     return render_template('forgot.html')
 
 

@@ -330,7 +330,7 @@ def register():
 # User login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST'
+    if request.method == 'POST':
         if recaptcha.verify():
             cursor = db1.cursor()
             # get form fields
@@ -513,7 +513,7 @@ def reset():
 
 @app.route('/forgot', methods = ['GET', 'POST'])
 def forgot():
-    if request.method == 'POST'
+    if request.method == 'POST':
         if recaptcha.verify():
             cursor = db1.cursor()
             usernamequery = "SELECT id from verifiedusers WHERE username = %s OR email = %s"

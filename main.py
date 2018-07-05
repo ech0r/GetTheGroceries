@@ -268,16 +268,17 @@ def about():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    if request.method == 'POST' and recaptcha.verify():
-        message = request.form['message']
-        email = request.form['email']
-        subject = request.form['subject']
-        message = message + "\n\n\nFROM: " + email
-        msg = Message(subject=subject, body=message, sender='getthegroceries.io@gmail.com', recipients=['admin@getthegroceries.io'])
-        mail.send(msg)
-        flash('Email sent successfully. Thanks for contacting us, we will be in touch soon.', 'success')
-    elif not recaptcha.verify():
-        flash('Make sure recaptcha is completed correctly.', 'danger')
+    if request.method == 'POST':
+        if recaptcha.verify():
+            message = request.form['message']
+            email = request.form['email']
+            subject = request.form['subject']
+            message = message + "\n\n\nFROM: " + email
+            msg = Message(subject=subject, body=message, sender='getthegroceries.io@gmail.com', recipients=['admin@getthegroceries.io'])
+            mail.send(msg)
+            flash('Email sent successfully. Thanks for contacting us, we will be in touch soon.', 'success')
+        else:
+            flash('Make sure recaptcha is completed correctly.', 'danger')
     return render_template('contact.html')
 
 
@@ -285,42 +286,43 @@ def contact():
 def register():
     cursor = db1.cursor()
     form = RegisterForm(request.form)
-    if request.method == 'POST' and form.validate() and recaptcha.verify():
-        name = request.form['name']
-        email = request.form['email']
-        username = request.form['username']
-        newusernamequery = '''SELECT * FROM newusers WHERE username = %s'''
-        newemailquery = '''SELECT * FROM newusers WHERE email = %s'''
-        verifiedusernamequery = '''SELECT * FROM verifiedusers WHERE username = %s'''
-        verifiedemailquery = '''SELECT * FROM verifiedusers WHERE email = %s'''
-        cursor.execute(newusernamequery, [username])
-        newusernamedata = cursor.fetchone()
-        cursor.execute(newemailquery, [email])
-        newemaildata = cursor.fetchone()
-        cursor.execute(verifiedusernamequery, [username])
-        verifiedusernamedata = cursor.fetchone()
-        cursor.execute(verifiedemailquery, [email])
-        verifiedemaildata = cursor.fetchone()
-        if newemaildata or verifiedemaildata:
-            flash("That email is already in use with another account, pick something different.", 'danger')
-            return render_template('register.html', form=form)
-        if newusernamedata or verifiedusernamedata:
-            flash("That username is already in use, pick something different.", 'danger')
-            return render_template('register.html', form=form)
+    if request.method == 'POST' and form.validate():
+        if recaptcha.verify():
+            name = request.form['name']
+            email = request.form['email']
+            username = request.form['username']
+            newusernamequery = '''SELECT * FROM newusers WHERE username = %s'''
+            newemailquery = '''SELECT * FROM newusers WHERE email = %s'''
+            verifiedusernamequery = '''SELECT * FROM verifiedusers WHERE username = %s'''
+            verifiedemailquery = '''SELECT * FROM verifiedusers WHERE email = %s'''
+            cursor.execute(newusernamequery, [username])
+            newusernamedata = cursor.fetchone()
+            cursor.execute(newemailquery, [email])
+            newemaildata = cursor.fetchone()
+            cursor.execute(verifiedusernamequery, [username])
+            verifiedusernamedata = cursor.fetchone()
+            cursor.execute(verifiedemailquery, [email])
+            verifiedemaildata = cursor.fetchone()
+            if newemaildata or verifiedemaildata:
+                flash("That email is already in use with another account, pick something different.", 'danger')
+                return render_template('register.html', form=form)
+            if newusernamedata or verifiedusernamedata:
+                flash("That username is already in use, pick something different.", 'danger')
+                return render_template('register.html', form=form)
+            else:
+                password = encrypt(request.form['password'], username)
+                key = recoverykey()
+                cursor.execute("INSERT INTO newusers( name, email, username, password, confirmation) VALUES(%s, %s, %s, %s, %s)", (name, email, username, password, key))
+                # Commit to DB
+                db1.commit()
+                cursor.close()
+                message = "Click the link below to activate your account: \n\n" + "https://getthegroceries.io/confirm?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
+                msg = Message(subject="Get The Groceries Account Confirmation", body=message,
+                              sender='getthegroceries.io@gmail.com', recipients=[email])
+                mail.send(msg)
+                flash('You are now registered. Please check your email to activate your account', 'success')
         else:
-            password = encrypt(request.form['password'], username)
-            key = recoverykey()
-            cursor.execute("INSERT INTO newusers( name, email, username, password, confirmation) VALUES(%s, %s, %s, %s, %s)", (name, email, username, password, key))
-            # Commit to DB
-            db1.commit()
-            cursor.close()
-            message = "Click the link below to activate your account: \n\n" + "https://getthegroceries.io/confirm?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
-            msg = Message(subject="Get The Groceries Account Confirmation", body=message,
-                          sender='getthegroceries.io@gmail.com', recipients=[email])
-            mail.send(msg)
-            flash('You are now registered. Please check your email to activate your account', 'success')
-    elif not recaptcha.verify():
-        flash('Make sure recaptcha is completed correctly.', 'danger')
+            flash('Make sure recaptcha is completed correctly.', 'danger')
     cursor.close()
     return render_template('register.html', form=form)
 
@@ -328,42 +330,43 @@ def register():
 # User login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST' and recaptcha.verify():
-        cursor = db1.cursor()
-        # get form fields
-        username = request.form['username']
-        email = username
-        password_candidate = request.form['password']
-        button = request.form['button']
-        # get user by username
-        cursor.execute("SELECT * FROM verifiedusers WHERE username = %s OR email = %s", [username, email])
-        result = cursor.fetchone()
-        cursor.execute("SELECT * FROM newusers WHERE username = %s OR email = %s", [username, email])
-        newresult = cursor.fetchone()
-        if button == 'forgot':
-            return redirect(url_for('forgot'))
-        if result:
-            # get stored hash
-            storedhash = result[4]
-            # compare passwords
-            if passwordverify(username, storedhash, password_candidate):
-                # passed login
-                session['logged_in'] = True
-                session['username'] = username
-                flash('You are now logged in', 'success')
-                return redirect(url_for('dashboard'))
-            else:
-                error = 'Invalid Login'
+    if request.method == 'POST'
+        if recaptcha.verify():
+            cursor = db1.cursor()
+            # get form fields
+            username = request.form['username']
+            email = username
+            password_candidate = request.form['password']
+            button = request.form['button']
+            # get user by username
+            cursor.execute("SELECT * FROM verifiedusers WHERE username = %s OR email = %s", [username, email])
+            result = cursor.fetchone()
+            cursor.execute("SELECT * FROM newusers WHERE username = %s OR email = %s", [username, email])
+            newresult = cursor.fetchone()
+            if button == 'forgot':
+                return redirect(url_for('forgot'))
+            if result:
+                # get stored hash
+                storedhash = result[4]
+                # compare passwords
+                if passwordverify(username, storedhash, password_candidate):
+                    # passed login
+                    session['logged_in'] = True
+                    session['username'] = username
+                    flash('You are now logged in', 'success')
+                    return redirect(url_for('dashboard'))
+                else:
+                    error = 'Invalid Login'
+                    return render_template('login.html', error=error)
+            if newresult:
+                error = 'Please activate your account first.'
                 return render_template('login.html', error=error)
-        if newresult:
-            error = 'Please activate your account first.'
-            return render_template('login.html', error=error)
+            else:
+                error = 'Username not found'
+                return render_template('login.html', error=error)
+            cursor.close()
         else:
-            error = 'Username not found'
-            return render_template('login.html', error=error)
-        cursor.close()
-    elif not recaptcha.verify():
-        flash('Make sure recaptcha is completed correctly.', 'danger')
+            flash('Make sure recaptcha is completed correctly.', 'danger')
     return render_template('login.html')
 
 
@@ -401,7 +404,7 @@ def confirm():
             session.clear()
             flash('Cannot use an old key.', 'danger')
             return redirect(url_for('index'))
-        cursor.clos()
+        cursor.close()
     else:
         session.clear()
         flash("Don't do that. Your IP has been logged.", 'danger')
@@ -510,31 +513,32 @@ def reset():
 
 @app.route('/forgot', methods = ['GET', 'POST'])
 def forgot():
-    if request.method == 'POST' and recaptcha.verify():
-        cursor = db1.cursor()
-        usernamequery = "SELECT id from verifiedusers WHERE username = %s OR email = %s"
-        emailuser = request.form['username']
-        cursor.execute(usernamequery, [emailuser, emailuser])
-        result = cursor.fetchone()
-        if result:
-            getuseremail = "SELECT email FROM verifiedusers WHERE id = %s"
-            cursor.execute(getuseremail, [result])
-            email = cursor.fetchone()
-            # create recovery key
-            key = recoverykey()
-            updateuser = "UPDATE verifiedusers SET recovery = %s WHERE id = %s"
-            cursor.execute(updateuser, [key, result])
-            # send user email with recovery key
-            message = "Click here to reset your password: \n\n" + "https://getthegroceries.io/reset?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
-            msg = Message(subject="Get The Groceries Password Reset", body=message, sender='getthegroceries.io@gmail.com', recipients=[email[0]])
-            mail.send(msg)
-            flash("User account exists. Sent email to reset password.", 'success')
+    if request.method == 'POST'
+        if recaptcha.verify():
+            cursor = db1.cursor()
+            usernamequery = "SELECT id from verifiedusers WHERE username = %s OR email = %s"
+            emailuser = request.form['username']
+            cursor.execute(usernamequery, [emailuser, emailuser])
+            result = cursor.fetchone()
+            if result:
+                getuseremail = "SELECT email FROM verifiedusers WHERE id = %s"
+                cursor.execute(getuseremail, [result])
+                email = cursor.fetchone()
+                # create recovery key
+                key = recoverykey()
+                updateuser = "UPDATE verifiedusers SET recovery = %s WHERE id = %s"
+                cursor.execute(updateuser, [key, result])
+                # send user email with recovery key
+                message = "Click here to reset your password: \n\n" + "https://getthegroceries.io/reset?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
+                msg = Message(subject="Get The Groceries Password Reset", body=message, sender='getthegroceries.io@gmail.com', recipients=[email[0]])
+                mail.send(msg)
+                flash("User account exists. Sent email to reset password.", 'success')
+            else:
+                flash("User account does not exist. Try again.", 'danger')
+            db1.commit()
         else:
-            flash("User account does not exist. Try again.", 'danger')
-        db1.commit()
-        cursor.close()
-    elif not recaptcha.verify():
-        flash('Make sure captcha is completed correctly.', 'danger')
+            flash('Make sure captcha is completed correctly.', 'danger')
+    cursor.close()
     return render_template('forgot.html')
 
 

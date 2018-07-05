@@ -3,12 +3,18 @@ from flask_mail import Mail, Message
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import pbkdf2_sha256
 from functools import wraps
+from flask_recaptcha import ReCaptcha
 import MySQLdb
 import random
 import json
 
 
 app = Flask(__name__)
+app.secret_key = 'bingbongdingdong123'
+recaptcha = ReCaptcha()
+sitekey = '6LfBtWEUAAAAAO71exhsIPsHE55_avrTvRfwTuUH'
+secretkey = '6LfBtWEUAAAAAO-lcADvr0VzeNHE3QpjBLJ4eisA'
+recaptcha.init_app(app, sitekey, secretkey, is_enabled=True)
 app.debug = True
 
 # password crypto
@@ -271,7 +277,7 @@ def contact():
 def register():
     cursor = db1.cursor()
     form = RegisterForm(request.form)
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST' and form.validate() and recaptcha.verify():
         name = request.form['name']
         email = request.form['email']
         username = request.form['username']
@@ -305,6 +311,8 @@ def register():
                           sender='getthegroceries.io@gmail.com', recipients=[email])
             mail.send(msg)
             flash('You are now registered. Please check your email to activate your account', 'success')
+    else:
+        flash('Make sure captcha is completed correctly.','danger')
     cursor.close()
     return render_template('register.html', form=form)
 
@@ -312,8 +320,8 @@ def register():
 # User login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    cursor = db1.cursor()
-    if request.method == 'POST':
+    if request.method == 'POST' and recaptcha.verify():
+        cursor = db1.cursor()
         # get form fields
         username = request.form['username']
         email = username
@@ -324,7 +332,6 @@ def login():
         result = cursor.fetchone()
         cursor.execute("SELECT * FROM newusers WHERE username = %s OR email = %s", [username, email])
         newresult = cursor.fetchone()
-        #print(result)
         if button == 'forgot':
             return redirect(url_for('forgot'))
         if result:
@@ -346,7 +353,9 @@ def login():
         else:
             error = 'Username not found'
             return render_template('login.html', error=error)
-    cursor.close()
+        cursor.close()
+    else:
+        flash('Make sure captcha is completed correctly.','danger')
     return render_template('login.html')
 
 
@@ -384,6 +393,7 @@ def confirm():
             session.clear()
             flash('Cannot use an old key.', 'danger')
             return redirect(url_for('index'))
+        cursor.clos()
     else:
         session.clear()
         flash("Don't do that. Your IP has been logged.", 'danger')
@@ -394,9 +404,9 @@ def confirm():
 @is_logged_in
 def delete():
     if request.method == 'POST':
-        delete = request.form['delete']
+        deleted = request.form['delete']
         print(delete)
-        if delete == 'delete':
+        if deleted == 'delete':
             cursor = db1.cursor()
             username = session['username']
             getdetails = "SELECT id, name, email FROM verifiedusers WHERE username = %s"
@@ -420,7 +430,8 @@ def delete():
     else:
         return render_template('delete.html')
 
-@app.route('/account', methods = ['GET', 'POST'])
+
+@app.route('/account', methods=['GET', 'POST'])
 @is_logged_in
 def account():
     form = AccountForm(request.form)
@@ -458,12 +469,11 @@ def account():
             cursor.execute(updateuser, [newname, newuser, newemail, hashedpassword, identity])
             flash("Profile Updated", 'success')
             db1.commit()
-            cursor.close()
     cursor.close()
     return render_template('account.html', form=form)
 
 
-@app.route('/reset', methods = ['GET'])
+@app.route('/reset', methods=['GET'])
 def reset():
     cursor = db1.cursor()
     if request.method == 'GET':
@@ -492,7 +502,7 @@ def reset():
 
 @app.route('/forgot', methods = ['GET', 'POST'])
 def forgot():
-    if request.method == 'POST':
+    if request.method == 'POST' and recaptcha.verify():
         cursor = db1.cursor()
         usernamequery = "SELECT id from verifiedusers WHERE username = %s OR email = %s"
         emailuser = request.form['username']
@@ -515,6 +525,8 @@ def forgot():
             flash("User account does not exist. Try again.", 'danger')
         db1.commit()
         cursor.close()
+    else:
+        flash('Make sure captcha is completed correctly.', 'Danger')
     return render_template('forgot.html')
 
 

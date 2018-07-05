@@ -9,6 +9,7 @@
                 <label>Username or Email</label>
                 <input type="text" name="username" class="form-control" value={{request.form.username}}>
             </div>
+            {{ recaptcha }}
             <button type="submit" class="btn btn-outline-secondary">Submit</button>
         </form>
     </div>

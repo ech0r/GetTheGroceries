@@ -17,6 +17,10 @@ secretkey = '6LfBtWEUAAAAAO-lcADvr0VzeNHE3QpjBLJ4eisA'
 recaptcha.site_key = sitekey
 recaptcha.secret_key = secretkey
 recaptcha.is_enabled = True
+recaptcha.theme = 'light'
+recaptcha.type = 'image'
+recaptcha.size = 'normal'
+recaptcha.tabindex = 0
 app.debug = True
 
 # password crypto

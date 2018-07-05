@@ -11,10 +11,12 @@ import json
 
 app = Flask(__name__)
 app.secret_key = 'bingbongdingdong123'
-recaptcha = ReCaptcha()
+recaptcha = ReCaptcha(app=app)
 sitekey = '6LfBtWEUAAAAAO71exhsIPsHE55_avrTvRfwTuUH'
 secretkey = '6LfBtWEUAAAAAO-lcADvr0VzeNHE3QpjBLJ4eisA'
-recaptcha.init_app(app, sitekey, secretkey, is_enabled=True)
+recaptcha.site_key = sitekey
+recaptcha.secret_key = secretkey
+recaptcha.is_enabled = True
 app.debug = True
 
 # password crypto

@@ -330,12 +330,13 @@ def register():
 # User login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    cursor = db1.cursor()
     if request.method == 'POST':
         button = request.form['button']
         if button == 'forgot':
             return redirect(url_for('forgot'))
         if recaptcha.verify():
-            cursor = db1.cursor()
+
             # get form fields
             username = request.form['username']
             email = username
@@ -354,19 +355,24 @@ def login():
                     session['logged_in'] = True
                     session['username'] = username
                     flash('You are now logged in', 'success')
+                    cursor.close()
                     return redirect(url_for('dashboard'))
                 else:
                     error = 'Invalid Login'
+                    cursor.close()
                     return render_template('login.html', error=error)
             if newresult:
                 error = 'Please activate your account first.'
+                cursor.close()
                 return render_template('login.html', error=error)
             else:
                 error = 'Username not found'
+                cursor.close()
                 return render_template('login.html', error=error)
-            cursor.close()
+
         else:
             flash('Make sure recaptcha is completed correctly.', 'danger')
+    cursor.close()
     return render_template('login.html')
 
 
@@ -513,9 +519,9 @@ def reset():
 
 @app.route('/forgot', methods = ['GET', 'POST'])
 def forgot():
+    cursor = db1.cursor()
     if request.method == 'POST':
         if recaptcha.verify():
-            cursor = db1.cursor()
             usernamequery = "SELECT id from verifiedusers WHERE username = %s OR email = %s"
             emailuser = request.form['username']
             cursor.execute(usernamequery, [emailuser, emailuser])

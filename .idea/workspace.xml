@@ -7,7 +7,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a7658102-bdac-4e92-bd00-bae6a6f6ae08" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -93,8 +92,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="752">
-              <caret line="333" column="39" selection-start-line="333" selection-start-column="39" selection-end-line="333" selection-end-column="39" />
+            <state relative-caret-position="208">
+              <caret line="523" column="30" selection-start-line="523" selection-start-column="30" selection-end-line="523" selection-end-column="30" />
               <folding>
                 <element signature="e#0#99#0" expanded="true" />
               </folding>
@@ -722,8 +721,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="752">
-          <caret line="333" column="39" selection-start-line="333" selection-start-column="39" selection-end-line="333" selection-end-column="39" />
+        <state relative-caret-position="208">
+          <caret line="523" column="30" selection-start-line="523" selection-start-column="30" selection-end-line="523" selection-end-column="30" />
           <folding>
             <element signature="e#0#99#0" expanded="true" />
           </folding>

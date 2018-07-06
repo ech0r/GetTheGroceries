@@ -331,6 +331,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        button = request.form['button']
         if button == 'forgot':
             return redirect(url_for('forgot'))
         if recaptcha.verify():
@@ -339,7 +340,6 @@ def login():
             username = request.form['username']
             email = username
             password_candidate = request.form['password']
-            button = request.form['button']
             # get user by username
             cursor.execute("SELECT * FROM verifiedusers WHERE username = %s OR email = %s", [username, email])
             result = cursor.fetchone()

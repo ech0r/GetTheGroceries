@@ -16,7 +16,9 @@
                 <label for="message">Message</label>
                 <textarea type="text" name="message" id="message" class="form-control" value={{request.form.message}}></textarea>
             </div>
+            <div class="form-group">
             {{ recaptcha }}
+            </div>
             <button type="submit" name="button" value="submit" class="btn btn-outline-success">Send Email</button>
         </form>
     </div>

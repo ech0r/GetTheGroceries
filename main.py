@@ -331,6 +331,8 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        if button == 'forgot':
+            return redirect(url_for('forgot'))
         if recaptcha.verify():
             cursor = db1.cursor()
             # get form fields
@@ -343,8 +345,6 @@ def login():
             result = cursor.fetchone()
             cursor.execute("SELECT * FROM newusers WHERE username = %s OR email = %s", [username, email])
             newresult = cursor.fetchone()
-            if button == 'forgot':
-                return redirect(url_for('forgot'))
             if result:
                 # get stored hash
                 storedhash = result[4]

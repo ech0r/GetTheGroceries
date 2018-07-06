@@ -13,7 +13,9 @@
                 <label>Password</label>
                 <input type="password" name="password" class="form-control" value={{request.form.password}}>
             </div>
+            <div>
             {{ recaptcha }}
+            </div>
             <button type="submit" name="button" value="submit" class="btn btn-outline-secondary">Submit</button>
             <button type="submit" name="button" value="forgot" class="btn btn-outline-secondary float-right">Forgot Password</button>
         </form>

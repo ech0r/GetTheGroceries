@@ -1,5 +1,5 @@
 FROM python:3-alpine
-COPY ./GetTheGroceries /usr/src/getthegroceries
+COPY ./ /usr/src/getthegroceries
 WORKDIR /usr/src/getthegroceries
 RUN apk add --no-cache --virtual .build-deps mariadb-dev build-base
 RUN pip install --no-cache-dir -r requirements.txt

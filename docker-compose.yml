@@ -24,12 +24,12 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "8080:80"
-      - "4567:443"
+      - "80:80"
+      - "443:443"
     depends_on:
       - flask
     volumes:
-      - ./GetTheGroceries:/usr/src/GetTheGroceries
+      - ./:/usr/src/GetTheGroceries
       - ./nginx/getthegroceries.conf:/etc/nginx/conf.d/getthegroceries.conf
     networks:
       - web_nw

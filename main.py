@@ -134,6 +134,7 @@ def get_all_recipes(user_id):
             unit_list.append(ingredient[5])
         cursor2.close()
         recipes[row[0]] = Recipe(row[2],row[3],ingredient_list,amount_list,unit_list)
+    cursor.close()
     return recipes
 
 
@@ -156,6 +157,18 @@ def encrypt(password, username):
     #print(seasonedbeef)
     hashy = pbkdf2_sha256.hash(seasonedbeef)
     return hashy
+
+
+def userReport():
+    cursor = db1.cursor()
+    getnumberofusers = "SELECT * FROM verifiedusers"
+    cursor.execute(getnumberofusers)
+    numberofusers = str(len(cursor.fetchall()))
+    message = "There are now " +  numberofusers + " users using GetTheGroceries\n\nAwesome!"
+    subject = "USER REPORT: GetTheGroceries has a new user!"
+    msg = Message(subject=subject, body=message, sender='getthegroceries.io@gmail.com', recipients=['getthegroceries.io@gmail.com'])
+    mail.send(msg)
+    cursor.close()
 
 
 def passwordverify(username, storedhash, password_candidate):
@@ -272,9 +285,9 @@ def contact():
         if recaptcha.verify():
             message = request.form['message']
             email = request.form['email']
-            subject = request.form['subject']
+            subject = "CONTACT FORM: " + request.form['subject']
             message = message + "\n\n\nFROM: " + email
-            msg = Message(subject=subject, body=message, sender='getthegroceries.io@gmail.com', recipients=['admin@getthegroceries.io'])
+            msg = Message(subject=subject, body=message, sender='getthegroceries.io@gmail.com', recipients=['getthegroceries.io@gmail.com'])
             mail.send(msg)
             flash('Email sent successfully. Thanks for contacting us, we will be in touch soon.', 'success')
         else:
@@ -405,6 +418,7 @@ def confirm():
             db1.commit()
             session['logged_in'] = True
             session['username'] = username
+            userReport()
             return redirect(url_for('dashboard'))
         else:
             session.clear()

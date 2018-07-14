@@ -39,8 +39,18 @@ app.config.update(dict(
 mail = Mail(app)
 
 # Init MySQL
-db1 = MySQLdb.connect(host="mysql-docker", user="root", passwd="Ilovemealplanning1[]")
-cursor1 = db1.cursor()
+def my_sql_init():
+    connection = MySQLdb.connect(host="mysql-docker", user="root", passwd="Ilovemealplanning1[]")
+    cursor = connection.cursor()
+    return cursor, connection
+
+def my_sql_close(connection,cursor):
+    cursor.close()
+    connection.close()
+
+sqldb = my_sql_init()
+cursor = sqldb[0]
+connection = sqldb[1]
 sql0 = "CREATE DATABASE IF NOT EXISTS getthegroceries;"
 sql1 = "USE getthegroceries;"
 sql2 = "CREATE TABLE IF NOT EXISTS newusers(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), username VARCHAR(30), password VARCHAR(100), confirmation VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
@@ -49,14 +59,14 @@ sql4 = "CREATE TABLE IF NOT EXISTS recipes(recipe_id INT(11) AUTO_INCREMENT PRIM
 sql5 = "CREATE TABLE IF NOT EXISTS ingredients(ingr_id INT(11) AUTO_INCREMENT PRIMARY KEY, user_id INT(11), recipe_id INT(11), name VARCHAR(255), amount VARCHAR(10), unit VARCHAR(10));"
 
 #Execute MySQL setup
-cursor1.execute(sql0)
-cursor1.execute(sql1)
-cursor1.execute(sql2)
-cursor1.execute(sql3)
-cursor1.execute(sql4)
-cursor1.execute(sql5)
-cursor1.close()
+cursor.execute(sql0)
+cursor.execute(sql1)
+cursor.execute(sql2)
+cursor.execute(sql3)
+cursor.execute(sql4)
+cursor.execute(sql5)
 
+my_sql_close(connection,cursor)
 
 #Classes
 class Recipe:
@@ -111,9 +121,10 @@ def is_logged_in(f):
             return redirect(url_for('login'))
     return wrap
 
-
 def get_all_recipes(user_id):
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     recipe_query = "SELECT * FROM recipes WHERE user_id = %s"
     ingredient_query = "SELECT * FROM ingredients where recipe_id = %s"
     cursor.execute(recipe_query, [user_id])
@@ -122,7 +133,7 @@ def get_all_recipes(user_id):
     #iterate through recipes
     for row in cursor:
         #create new cursor object to do ingredient queries
-        cursor2 = db1.cursor()
+        cursor2 = connection.cursor()
         cursor2.execute(ingredient_query,[row[0]])
         cursor2.fetchall()
         ingredient_list = []
@@ -134,7 +145,7 @@ def get_all_recipes(user_id):
             unit_list.append(ingredient[5])
         cursor2.close()
         recipes[row[0]] = Recipe(row[2],row[3],ingredient_list,amount_list,unit_list)
-    cursor.close()
+    my_sql_close(connection,cursor)
     return recipes
 
 
@@ -160,7 +171,9 @@ def encrypt(password, username):
 
 
 def userReport():
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     getnumberofusers = "SELECT * FROM verifiedusers"
     cursor.execute(getnumberofusers)
     numberofusers = str(len(cursor.fetchall()))
@@ -168,7 +181,7 @@ def userReport():
     subject = "USER REPORT: GetTheGroceries has a new user!"
     msg = Message(subject=subject, body=message, sender='getthegroceries.io@gmail.com', recipients=['getthegroceries.io@gmail.com'])
     mail.send(msg)
-    cursor.close()
+    my_sql_close(connection,cursor)
 
 
 def passwordverify(username, storedhash, password_candidate):
@@ -182,7 +195,9 @@ def passwordverify(username, storedhash, password_candidate):
 
 
 def delete_recipe(recipe, user_id):
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     getrecipe_id = "SELECT recipe_id from recipes WHERE title=%s AND user_id=%s"
     deletesql1 = "DELETE FROM recipes WHERE recipe_id=%s"
     deletesql2 = "DELETE FROM ingredients WHERE recipe_id=%s"
@@ -190,8 +205,8 @@ def delete_recipe(recipe, user_id):
     recipe_id = cursor.fetchone()[0]
     cursor.execute(deletesql1, [recipe_id])
     cursor.execute(deletesql2, [recipe_id])
-    db1.commit()
-    cursor.close()
+    connection.commit()
+    my_sql_close(connection,cursor)
 
 
 # Flask routes
@@ -206,8 +221,10 @@ def edit_recipe():
     recipe = request.args.get('recipe')
     user = session['username']
 
-    # declare cursor
-    cursor = db1.cursor()
+    # declare cursor/db connection
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
 
     # sql queries
     getuserid = "SELECT id FROM verifiedusers WHERE username=%s"
@@ -252,23 +269,23 @@ def edit_recipe():
             # updates recipe data in SQL tables
             recipeupdate = "UPDATE recipes SET title=%s, description=%s WHERE recipe_id=%s;"
             cursor.execute(recipeupdate, [newtitle, newdescription, recipe_id])
-            db1.commit()
+            connection.commit()
             dropoldingredients = "DELETE FROM ingredients WHERE recipe_id=%s"
             cursor.execute(dropoldingredients, [recipe_id])
-            db1.commit()
+            connection.commit()
             for i in range(len(ingredients)):
                 ingredientinsert = "INSERT INTO ingredients (user_id, recipe_id, name, amount, unit) VALUES (%s, %s, %s, %s, %s)"
                 cursor.execute(ingredientinsert, [user_id, recipe_id, ingredients[i], amounts[i], units[i]])
             # commit to db
-            db1.commit()
+            connection.commit()
             flash('Recipe Updated', 'success')
-            cursor.close()
+            my_sql_close(connection,cursor)
             return redirect(url_for('dashboard'))
         else:
             flash('The title "' + newtitle + '" has already been used by you, pick a different title.', 'danger')
             return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units,unittype=unittype)
     else:
-        cursor.close()
+        my_sql_close(connection,cursor)
         return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
 
 
@@ -297,7 +314,9 @@ def contact():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
         if recaptcha.verify():
@@ -327,8 +346,8 @@ def register():
                 key = recoverykey()
                 cursor.execute("INSERT INTO newusers( name, email, username, password, confirmation) VALUES(%s, %s, %s, %s, %s)", (name, email, username, password, key))
                 # Commit to DB
-                db1.commit()
-                cursor.close()
+                connection.commit()
+                my_sql_close(connection,cursor)
                 message = "Click the link below to activate your account: \n\n" + "https://getthegroceries.io/confirm?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
                 msg = Message(subject="Get The Groceries Account Confirmation", body=message,
                               sender='getthegroceries.io@gmail.com', recipients=[email])
@@ -336,14 +355,16 @@ def register():
                 flash('You are now registered. Please check your email to activate your account', 'success')
         else:
             flash('Make sure recaptcha is completed correctly.', 'danger')
-    cursor.close()
+    my_sql_close(connection,cursor)
     return render_template('register.html', form=form)
 
 
 # User login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     if request.method == 'POST':
         button = request.form['button']
         if button == 'forgot':
@@ -368,24 +389,24 @@ def login():
                     session['logged_in'] = True
                     session['username'] = username
                     flash('You are now logged in', 'success')
-                    cursor.close()
+                    my_sql_close(connection,cursor)
                     return redirect(url_for('dashboard'))
                 else:
                     error = 'Invalid Login'
-                    cursor.close()
+                    my_sql_close(connection,cursor)
                     return render_template('login.html', error=error)
             if newresult:
                 error = 'Please activate your account first.'
-                cursor.close()
+                my_sql_close(connection,cursor)
                 return render_template('login.html', error=error)
             else:
                 error = 'Username not found'
-                cursor.close()
+                my_sql_close(connection,cursor)
                 return render_template('login.html', error=error)
 
         else:
             flash('Make sure recaptcha is completed correctly.', 'danger')
-    cursor.close()
+    my_sql_close(connection,cursor)
     return render_template('login.html')
 
 
@@ -402,7 +423,9 @@ def logout():
 @app.route('/confirm', methods = ['GET'])
 def confirm():
     if request.method == 'GET':
-        cursor = db1.cursor()
+        sqldb = my_sql_init()
+        cursor = sqldb[0]
+        connection = sqldb[1]
         key = request.args.get('key')
         confirmsql = "SELECT * from newusers WHERE confirmation = %s"
         cursor.execute(confirmsql, [key])
@@ -415,19 +438,21 @@ def confirm():
             password = confirmation[4]
             cursor.execute("INSERT INTO verifiedusers(name, email, username, password) VALUES(%s, %s, %s, %s)",(name, email, username, password))
             cursor.execute("DELETE FROM newusers WHERE id = %s", [identity])
-            db1.commit()
+            connection.commit()
             session['logged_in'] = True
             session['username'] = username
             userReport()
+            my_sql_close(connection,cursor)
             return redirect(url_for('dashboard'))
         else:
             session.clear()
             flash('Cannot use an old key.', 'danger')
+            my_sql_close(connection,cursor)
             return redirect(url_for('index'))
-        cursor.close()
     else:
         session.clear()
         flash("Don't do that. Your IP has been logged.", 'danger')
+        my_sql_close(connection,cursor)
         return redirect(url_for('index'))
 
 
@@ -438,7 +463,9 @@ def delete():
         deleted = request.form['delete']
         print(delete)
         if deleted == 'delete':
-            cursor = db1.cursor()
+            sqldb = my_sql_init()
+            cursor = sqldb[0]
+            connection = sqldb[1]
             username = session['username']
             getdetails = "SELECT id, name, email FROM verifiedusers WHERE username = %s"
             cursor.execute(getdetails, [username])
@@ -451,8 +478,8 @@ def delete():
             cursor.execute(deleterecipes, [identity])
             cursor.execute(deleteingredients, [identity])
             session.clear()
-            db1.commit()
-            cursor.close()
+            connection.commit()
+            my_sql_close(connection,cursor)
             error = 'Your Account has been deleted.'
             return render_template('login.html', error=error)
         else:
@@ -466,7 +493,9 @@ def delete():
 @is_logged_in
 def account():
     form = AccountForm(request.form)
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     username = session['username']
     getdetails = "SELECT id, name, email FROM verifiedusers WHERE username = %s"
     cursor.execute(getdetails, [username])
@@ -488,10 +517,12 @@ def account():
         if verifieddata:
             if verifieddata[0][0] is not identity:
                 flash("That email or username is already in use with another account, pick something different.", 'danger')
+                my_sql_close(connection,cursor)
                 return render_template('account.html', form=form)
         if newdata:
             if newdata[0][0] is not identity:
                 flash("That email or username is already in use with another account, pick something different.",'danger')
+                my_sql_close(connection,cursor)
                 return render_template('account.html', form=form)
         else:
             # encrypt new password
@@ -499,14 +530,16 @@ def account():
             updateuser = "UPDATE verifiedusers SET name = %s, username = %s, email = %s, password = %s WHERE id = %s"
             cursor.execute(updateuser, [newname, newuser, newemail, hashedpassword, identity])
             flash("Profile Updated", 'success')
-            db1.commit()
-    cursor.close()
+            connection.commit()
+    my_sql_close(connection,cursor)
     return render_template('account.html', form=form)
 
 
 @app.route('/reset', methods=['GET'])
 def reset():
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     if request.method == 'GET':
         # get key from GET request
         key = request.args.get('key')
@@ -520,20 +553,22 @@ def reset():
             deleterecovery = "UPDATE verifiedusers SET recovery = NULL WHERE username = %s"
             cursor.execute(deleterecovery, [username[0]])
             flash("logging you in, redirecting you to account page to reset password", 'success')
-            db1.commit()
-            cursor.close()
+            connection.commit()
+            my_sql_close(connection,cursor)
             return redirect(url_for('account'))
 
         else:
             flash("Invalid key, redirecting to login page.", 'danger')
-            cursor.close()
+            my_sql_close(connection,cursor)
             return redirect(url_for('login'))
 
 
 
 @app.route('/forgot', methods = ['GET', 'POST'])
 def forgot():
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     if request.method == 'POST':
         if recaptcha.verify():
             usernamequery = "SELECT id from verifiedusers WHERE username = %s OR email = %s"
@@ -553,12 +588,12 @@ def forgot():
                 msg = Message(subject="Get The Groceries Password Reset", body=message, sender='getthegroceries.io@gmail.com', recipients=[email[0]])
                 mail.send(msg)
                 flash("User account exists. Sent email to reset password.", 'success')
+                connection.commit()
             else:
                 flash("User account does not exist. Try again.", 'danger')
-            db1.commit()
         else:
             flash('Make sure captcha is completed correctly.', 'danger')
-    cursor.close()
+    my_sql_close(connection,cursor)
     return render_template('forgot.html')
 
 
@@ -566,14 +601,16 @@ def forgot():
 @app.route('/dashboard', methods = ['GET', 'POST'])
 @is_logged_in
 def dashboard():
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     user = session['username']
     user_id_query = "SELECT id FROM verifiedusers WHERE username = %s"
     cursor.execute(user_id_query, [user])
     data = cursor.fetchone()
     user_id = data[0]
     recipes = get_all_recipes(user_id)
-    cursor.close()
+    my_sql_close(connection,cursor)
     names = []
     descriptions = []
     recipedict = {}
@@ -595,7 +632,9 @@ def dashboard():
 @app.route('/add_recipe', methods=['GET', 'POST'])
 @is_logged_in
 def add_recipe():
-    cursor = db1.cursor()
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
     form = RecipeForm(request.form)
     units = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
     if request.method == 'POST' and form.validate():
@@ -618,7 +657,7 @@ def add_recipe():
             # insert recipe data into SQL tables
             recipeinsert = "INSERT INTO recipes(user_id, title, description) VALUES(%s, %s, %s)"
             cursor.execute(recipeinsert, [user_id[0], title, description])
-            db1.commit()
+            connection.commit()
             recipequery = "SELECT recipe_id FROM recipes WHERE title = %s"
             cursor.execute(recipequery, [title])
             recipe_id = cursor.fetchone()
@@ -626,12 +665,12 @@ def add_recipe():
                 ingredientinsert = "INSERT INTO ingredients(user_id, recipe_id, name, amount, unit) VALUES(%s, %s, %s, %s, %s)"
                 cursor.execute(ingredientinsert, [user_id[0], recipe_id[0], ingredient, amounts[i], units[i]])
             # commit to db
-            db1.commit()
+            connection.commit()
             flash('Recipe Created', 'success')
-            cursor.close()
+            my_sql_close(connection,cursor)
             return redirect(url_for('dashboard'))
     else:
-        cursor.close()
+        my_sql_close(connection,cursor)
         return render_template('add_recipe.html', form=form, units=units)
 
 

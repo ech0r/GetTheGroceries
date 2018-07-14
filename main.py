@@ -337,9 +337,11 @@ def register():
             verifiedemaildata = cursor.fetchone()
             if newemaildata or verifiedemaildata:
                 flash("That email is already in use with another account, pick something different.", 'danger')
+                my_sql_close(connection,cursor)
                 return render_template('register.html', form=form)
             if newusernamedata or verifiedusernamedata:
                 flash("That username is already in use, pick something different.", 'danger')
+                my_sql_close(connection,cursor)
                 return render_template('register.html', form=form)
             else:
                 password = encrypt(request.form['password'], username)
@@ -347,7 +349,6 @@ def register():
                 cursor.execute("INSERT INTO newusers( name, email, username, password, confirmation) VALUES(%s, %s, %s, %s, %s)", (name, email, username, password, key))
                 # Commit to DB
                 connection.commit()
-                my_sql_close(connection,cursor)
                 message = "Click the link below to activate your account: \n\n" + "https://getthegroceries.io/confirm?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
                 msg = Message(subject="Get The Groceries Account Confirmation", body=message,
                               sender='getthegroceries.io@gmail.com', recipients=[email])
@@ -370,7 +371,6 @@ def login():
         if button == 'forgot':
             return redirect(url_for('forgot'))
         if recaptcha.verify():
-
             # get form fields
             username = request.form['username']
             email = username
@@ -392,18 +392,11 @@ def login():
                     my_sql_close(connection,cursor)
                     return redirect(url_for('dashboard'))
                 else:
-                    error = 'Invalid Login'
-                    my_sql_close(connection,cursor)
-                    return render_template('login.html', error=error)
+                    flash('Invalid Login','danger')
             if newresult:
-                error = 'Please activate your account first.'
-                my_sql_close(connection,cursor)
-                return render_template('login.html', error=error)
+                flash('Please activate your account first.','danger')
             else:
-                error = 'Username not found'
-                my_sql_close(connection,cursor)
-                return render_template('login.html', error=error)
-
+                flash('Username Not Found','danger')
         else:
             flash('Make sure recaptcha is completed correctly.', 'danger')
     my_sql_close(connection,cursor)

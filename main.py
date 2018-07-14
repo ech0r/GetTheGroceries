@@ -42,15 +42,15 @@ mail = Mail(app)
 def my_sql_init():
     connection = MySQLdb.connect(host="mysql-docker", user="root", passwd="Ilovemealplanning1[]")
     cursor = connection.cursor()
+    cursor.execute("USE getthegroceries")
     return cursor, connection
 
 def my_sql_close(connection,cursor):
     cursor.close()
     connection.close()
 
-sqldb = my_sql_init()
-cursor = sqldb[0]
-connection = sqldb[1]
+connection = MySQLdb.connect(host="mysql-docker", user="root", passwd="Ilovemealplanning1[]")
+cursor = connection.cursor()
 sql0 = "CREATE DATABASE IF NOT EXISTS getthegroceries;"
 sql1 = "USE getthegroceries;"
 sql2 = "CREATE TABLE IF NOT EXISTS newusers(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), username VARCHAR(30), password VARCHAR(100), confirmation VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"

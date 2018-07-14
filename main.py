@@ -393,7 +393,7 @@ def login():
                     return redirect(url_for('dashboard'))
                 else:
                     flash('Invalid Login','danger')
-            if newresult:
+            elif newresult:
                 flash('Please activate your account first.','danger')
             else:
                 flash('Username Not Found','danger')

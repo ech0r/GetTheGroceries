@@ -383,6 +383,8 @@ def login():
             if result:
                 # get stored hash
                 storedhash = result[4]
+                print(storedhash)
+                print(result)
                 # compare passwords
                 if passwordverify(username, storedhash, password_candidate):
                     # passed login

@@ -1,12 +1,23 @@
+
+server {
+    listen 80;
+    server_name getthegroceries.io www.getthegroceries.io;
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+   
 server {
    # Define the server name, IP address, and/or port of the server
    listen 443;
+   server_name getthegroceries.io www.getthegroceries.io;
+
    # the “Content-Type” response header field
    charset utf-8;
 
    #SSL 
-   ssl_certificate /usr/src/GetTheGroceries/ssl/cert.pem
-   ssl_certificate_key /usr/src/GetTheGroceries/ssl/key.pem
+   ssl_certificate /etc/letsencrypt/live/getthegroceries.io/cert.pem;
+   ssl_certificate_key /etc/letsencrypt/live/getthegroceries.io/privkey.pem;
 
    # Configure NGINX to deliver static content from the specified folder
    location /static {
@@ -22,13 +33,5 @@ server {
        proxy_set_header Host $host;
        proxy_set_header X-Real-IP $remote_addr;
        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-}
-
-server {
-    listen 80;
-
-    location / {
-        return 301 https://$host$request_uri;
     }
 }

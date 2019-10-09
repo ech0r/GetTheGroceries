@@ -1,11 +1,9 @@
-FROM python:3-alpine
+FROM python:3-slim-stretch
 COPY requirements.txt /tmp
 WORKDIR /tmp
-RUN apk update
-RUN apk add --no-cache --virtual .build-deps mariadb-dev build-base mariadb-client mariadb-connector-c
+RUN apt-get update
+RUN apt-get install -y libmariadbclient-dev gcc
 RUN pip install --no-cache-dir -r requirements.txt
-RUN apk add --virtual .runtime-deps mariadb-client
-RUN apk del .build-deps
 RUN pip install --no-cache-dir gunicorn
 WORKDIR /usr/src/GetTheGroceries
 CMD ["gunicorn", "-b", ":5000", "main:app"]

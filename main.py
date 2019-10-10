@@ -33,7 +33,7 @@ app.config.update(dict(
     MAIL_USE_TLS = False,
     MAIL_USE_SSL = True,
     MAIL_USERNAME = 'getthegroceries.io',
-    MAIL_PASSWORD = 'thisisthecontactemail1[]'
+    MAIL_PASSWORD = 'xtjpfeecazuiegmm'
 ))
 
 mail = Mail(app)

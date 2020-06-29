@@ -283,7 +283,7 @@ def edit_recipe():
             return redirect(url_for('dashboard'))
         else:
             flash('The title "' + newtitle + '" has already been used by you, pick a different title.', 'danger')
-            return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units,unittype=unittype)
+            return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
     else:
         my_sql_close(connection,cursor)
         return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)

@@ -1,7 +1,10 @@
-body, html {
+body, html 
+{
     height: 100%;
 }
-.bg {
+
+.bg 
+{
     /* The image used */
 
 
@@ -14,9 +17,22 @@ body, html {
     background-size: cover;
 }
 
-#big-container {
+#big-container 
+{
     padding: 2rem;
 }
-.top-buffer {
+
+.top-buffer 
+{
     margin-top: 5rem;
+}
+
+@media only screen and (max-width: 700px) 
+{
+
+    .bg 
+    {
+        background-size: cover;
+    }
+
 }

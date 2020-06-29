@@ -20,7 +20,7 @@
 </body>
 <script type="text/javascript">
 
-if (window.matchMedia("(max-width: 700px)").matches)
+if (!(window.matchMedia("(max-width: 700px)").matches))
 {
     var images = ['pexels-photo-349609.jpeg', 'pexels-photo-349610.jpeg', 'pexels-photo-459469.jpeg', 'pexels-photo-616330.jpeg', 'pexels-photo-616358.jpeg', 'pexels-photo-616404.jpeg', 'pexels-photo-616409.jpeg', 'pexels-photo-616412.jpeg', 'pexels-photo-717130.jpeg'];
      $('.bg').css({'background-image': 'url(/static/images/' + images[Math.floor(Math.random() * images.length)] + ')'});

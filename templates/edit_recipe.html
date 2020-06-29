@@ -36,22 +36,22 @@
                                 </div>
                             </div>
                         </div>
-                        <script>
-                            var ingredients = {{ ingredients[1:]|tojson }};
-                            var amounts = {{ amounts[1:]|tojson}};
-                            var units = {{ units[1:]|tojson }};
-                            edit_ingredient_fields(ingredients, amounts, units);
-                        </script>
                     </div>
                     <br>
                     <div>
                         <p><input class="btn btn-outline-success btn-block" type="submit" value="Submit"></p>
-                        <a class="btn btn-outline-secondary btn-block" href="/dashboard">Back</a>;
+                        <a class="btn btn-outline-secondary btn-block" href="/dashboard">Back</a>
                     </div>
                 </div>
             </div>
         </form>
     </div>
+    <script>
+        var ingredients = {{ ingredients[1:]|tojson }};
+        var amounts = {{ amounts[1:]|tojson}};
+        var units = {{ units[1:]|tojson }};
+        edit_ingredient_fields(ingredients, amounts, units);
+    </script>
 
 
 

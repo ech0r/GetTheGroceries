@@ -21,14 +21,18 @@
                             <div id="ingredient_field" class="input-group">
                                 <input type="text" class="form-control" name="ingr_name" id="name" placeholder="Ingredient Name" required>
                                 <input type="number" step="0.01" min="0" max="999" class="form-control" name="amount" id="amount" placeholder="Amount" required>
-                                <select required name="unit" class="form-control">
-                                        <option value = "" selected disabled hidden>Choose Unit</option>
-                                    {% for unit in units %}
-                                        <option value="{{ unit }}">{{ unit }}</option>
+                                <select name="unit" class="form-control">
+                                    {% for type in unittype %}
+                                        {% if type == units[0] %}
+                                            <option selected>{{ units[0] }}</option>
+                                        {% else %}
+                                            <option>{{ type }}</option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                                 <div class="input-group-append">
                                     <button class="btn btn-success" type="button" onclick="ingredient_fields();" id="add-button"> <i class="fa fa-plus-square" aria-hidden="true"></i> </button>
+                                    <a class="btn btn-outline-secondary btn-block" href="/dashboard">Back</a>;
                                 </div>
                             </div>
                         </div>

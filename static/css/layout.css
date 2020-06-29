@@ -33,6 +33,8 @@ body, html
     .bg 
     {
         background-size: cover;
+        background-position: unset;
+        background-size: auto;
     }
 
 }

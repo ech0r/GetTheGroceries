@@ -31,10 +31,10 @@
             <div class="col-md">
                 <hr>
                 <h6>Your Current Recipe Bank:</h6>
-                <div class="pre-scrollable list-group" style="overflow-x:hidden;" id="recipebank" role="tablist">
+                <div class="pre-scrollable list-group" style="overflow-x:hidden;" id="recipebank">
                     {% for name in names %}
                     <form class="form-inline">
-                        <div class="list-group-item"  style="background-color: #F8F8F8; overflow-y: visible;" id="recipe{{loop.index}}">
+                        <div class="list-group-item"  style="background-color: #F8F8F8;" id="recipe{{loop.index}}">
                             <td id="recipe{{ loop.index }}">{{loop.index}}.  {{name}}</td>
                             <button type="button" id="{{ name }}_edit"   onclick="editRecipe('{{ name }}')" style="background-color:  #abb2b9;" class="btn btn-primary btn-sm btn-block">Edit</button>
                             <button type="button" id="{{ name }}_delete" onclick="deleteRecipe('{{ name }}')" style="background-color:  #f1948a;" class="btn btn-danger btn-sm btn-block">Delete</button>
@@ -46,7 +46,7 @@
             <div class="col-md">
                 <hr>
                 <h6>Your Current Meal Plan:</h6>
-                <div class="pre-scrollable list-group" style="overflow-x:hidden;" id="mealplan" role="tablist">
+                <div class="pre-scrollable list-group" style="overflow-x:hidden;" id="mealplan">
                 </div>
             </div>
         </div>

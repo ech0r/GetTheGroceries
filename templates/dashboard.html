@@ -3,21 +3,19 @@
 {% block body %}
 <script src="static/js/pdfmake.min.js"></script>
 <script src="static/js/vfs_fonts.js"></script>
-<div class="card mx-auto border-dark mb-3">
+<div class="card mx-auto border-dark mb-3" style="max-width: 90%;">
     <div class="card-body">
         <h4 class="card-title">Welcome {{session.username}}!</h4>
         <div class="row">
             <div class="col-sm">
                 <div class="btn-group" role="group">
                         <button type="button" class="btn btn-outline-secondary btn-sm" onclick="location.href='/add_recipe';">Add Recipe</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="recipeList()">Shuffle Recipes</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="createList()">Get Shopping List</a>
                 </div>
             </div>
             <div class="col-sm">
                  <form class="form-inline" role="form">
-                    <div class="btn-group col" role="group">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="recipeList()">Shuffle Recipes</button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="createList()">Get Shopping List</a>
-                    </div>
                     <div class="input-group mb3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="sel1">Number of days to shop for: </label>

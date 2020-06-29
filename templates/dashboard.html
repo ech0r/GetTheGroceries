@@ -7,11 +7,11 @@
     <div class="card-body">
         <h4 class="card-title">Welcome {{session.username}}!</h4>
         <div class="row">
-            <div class="col-sm">
+            <div class="col-md">
                 <button type="button" class="btn btn-outline-secondary btn-lg btn-block" onclick="location.href='/add_recipe';">Add Recipe</button>
                 <button type="button" class="btn btn-outline-secondary btn-lg btn-block" onclick="recipeList()">Shuffle Recipes</button>
             </div>
-            <div class="col-sm">
+            <div class="col-md">
                  <form class="form-inline block" role="form">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm">
+            <div class="col-md">
                 <hr>
                 <h6>Your Current Recipe Bank:</h6>
                 <div class="pre-scrollable list-group" style="overflow-x:hidden;" id="recipebank" role="tablist">
@@ -45,7 +45,7 @@
                      {% endfor %}
                 </div>
             </div>
-            <div class="col-sm">
+            <div class="col-md">
                 <hr>
                 <h6>Your Current Meal Plan:</h6>
                 <div class="pre-scrollable list-group" style="overflow-x:hidden;" id="mealplan" role="tablist">

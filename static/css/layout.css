@@ -27,6 +27,11 @@ body, html
 @media only screen and (max-width: 800px) 
 {
 
+    .form-inline
+    {
+        margin-top: 1rem;
+    }
+
     .bg 
     {
         background-color: #555;

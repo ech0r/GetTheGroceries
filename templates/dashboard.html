@@ -35,7 +35,7 @@
                     {% for name in names %}
                     <form class="form-inline">
                         <div class="list-group-item block"  style="background-color: #F8F8F8;" id="recipe{{loop.index}}">
-                            <td id="recipe{{ loop.index }}">{{loop.index}}.  {{name}}</td>
+                            <p id="recipe{{ loop.index }}">{{loop.index}}.  {{name}}</p>
                             <button type="button" id="{{ name }}_edit"   onclick="editRecipe('{{ name }}')" style="background-color:  #abb2b9;" class="btn btn-primary btn-sm btn-block">Edit</button>
                             <button type="button" id="{{ name }}_delete" onclick="deleteRecipe('{{ name }}')" style="background-color:  #f1948a;" class="btn btn-danger btn-sm btn-block">Delete</button>
                         </div>

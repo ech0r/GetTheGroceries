@@ -57,7 +57,7 @@ function recipeList()
         document.getElementById('descriptionsection' + i).innerHTML = recipedescrip[i].slice(0,29);
         mealplan.push(recipenames[i])
     }
-    window.location.hash = '#meal-plan'
+    window.location.hash = '#mealplan'
 }
 
 function shuffle(a,b,count)

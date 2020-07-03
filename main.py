@@ -49,7 +49,18 @@ def my_sql_close(connection,cursor):
     connection.close()
 
 # Initialize db connection and verify schema
-connection = MySQLdb.connect(host="mysql-docker", user=secrets.db_user, passwd=secrets.db_password)
+tries = 0
+while True:
+    try:
+        connection = MySQLdb.connect(host="mysql-docker", user=secrets.db_user, passwd=secrets.db_password)
+        break
+    except:
+        if tries == 9:
+            break
+        time.sleep(1)
+        tries += 1
+        continue
+
 cursor = connection.cursor()
 sql0 = secrets.sql0
 sql1 = secrets.sql1

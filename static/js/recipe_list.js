@@ -35,7 +35,7 @@ function recipeList()
         var row = document.createElement("div");
         var namesection = document.createElement("div");
         var descriptionsection = document.createElement("div");
-        row.setAttribute("class", "row list-group-item list-group-item-action");
+        row.setAttribute("class", "list-group-item");
         row.setAttribute("id", "row" + i);
         row.setAttribute("style", "background-color: #F8F8F8;")
         objTo.appendChild(row);

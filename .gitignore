@@ -2,3 +2,4 @@ mysql/
 __pycache__/
 *.pyc
 nginx/
+secrets.py

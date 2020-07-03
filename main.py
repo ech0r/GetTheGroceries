@@ -7,15 +7,14 @@ from flask_recaptcha import ReCaptcha
 import MySQLdb
 import random
 import json
+import secrets
 
 
 app = Flask(__name__)
-app.secret_key = 'bingbongdingdong123'
+app.secret_key = secrets.secret_key
 recaptcha = ReCaptcha(app=app)
-sitekey = '6LfBtWEUAAAAAO71exhsIPsHE55_avrTvRfwTuUH'
-secretkey = '6LfBtWEUAAAAAO-lcADvr0VzeNHE3QpjBLJ4eisA'
-recaptcha.site_key = sitekey
-recaptcha.secret_key = secretkey
+recaptcha.site_key = secrets.recaptcha_sitekey
+recaptcha.secret_key = secrets.recaptcha_secretkey
 recaptcha.is_enabled = True
 recaptcha.theme = 'light'
 recaptcha.type = 'image'
@@ -24,7 +23,7 @@ recaptcha.tabindex = 0
 app.debug = True
 
 # password crypto
-pepper = 'XVr7XrQJNnF0brWZLjWy'
+pepper = secrets.pepper
 
 # email stuff
 app.config.update(dict(
@@ -33,30 +32,31 @@ app.config.update(dict(
     MAIL_USE_TLS = False,
     MAIL_USE_SSL = True,
     MAIL_USERNAME = 'getthegroceries.io',
-    MAIL_PASSWORD = 'xtjpfeecazuiegmm'
+    MAIL_PASSWORD = secrets.email_password
 ))
 
 mail = Mail(app)
 
 # Init MySQL
 def my_sql_init():
-    connection = MySQLdb.connect(host="mysql-docker", user="root", passwd="Ilovemealplanning1[]")
+    connection = MySQLdb.connect(host="mysql-docker", user=secrets.db_user, passwd=secrets.db_password)
     cursor = connection.cursor()
-    cursor.execute("USE getthegroceries")
+    cursor.execute("USE " + secrets.db_name)
     return cursor, connection
 
 def my_sql_close(connection,cursor):
     cursor.close()
     connection.close()
 
-connection = MySQLdb.connect(host="mysql-docker", user="root", passwd="Ilovemealplanning1[]")
+# Initialize db connection and verify schema
+connection = MySQLdb.connect(host="mysql-docker", user=secrets.db_user, passwd=secrets.db_password)
 cursor = connection.cursor()
-sql0 = "CREATE DATABASE IF NOT EXISTS getthegroceries;"
-sql1 = "USE getthegroceries;"
-sql2 = "CREATE TABLE IF NOT EXISTS newusers(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), username VARCHAR(30), password VARCHAR(100), confirmation VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
-sql3 = "CREATE TABLE IF NOT EXISTS verifiedusers(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), username VARCHAR(30), password VARCHAR(100), recovery VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
-sql4 = "CREATE TABLE IF NOT EXISTS recipes(recipe_id INT(11) AUTO_INCREMENT PRIMARY KEY, user_id INT(11), title VARCHAR(255), description TEXT, date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP);"
-sql5 = "CREATE TABLE IF NOT EXISTS ingredients(ingr_id INT(11) AUTO_INCREMENT PRIMARY KEY, user_id INT(11), recipe_id INT(11), name VARCHAR(255), amount VARCHAR(10), unit VARCHAR(10));"
+sql0 = secrets.sql0
+sql1 = secrets.sql1
+sql2 = secrets.sql2
+sql3 = secrets.sql3
+sql4 = secrets.sql4
+sql5 = secrets.sql5
 
 #Execute MySQL setup
 cursor.execute(sql0)
@@ -165,7 +165,6 @@ def recoverykey():
 def encrypt(password, username):
     salt = username + reverse_string(username)
     seasonedbeef = salt + password + pepper
-    #print(seasonedbeef)
     hashy = pbkdf2_sha256.hash(seasonedbeef)
     return hashy
 
@@ -187,7 +186,6 @@ def userReport():
 def passwordverify(username, storedhash, password_candidate):
     salt = username + reverse_string(username)
     password_candidate = salt + password_candidate + pepper
-    #print(password_candidate)
     if pbkdf2_sha256.verify(password_candidate, storedhash):
         return True
     else:
@@ -670,5 +668,5 @@ def add_recipe():
 
 
 if __name__ == '__main__':
-    app.secret_key = 'bingbongdingdong123'
+    app.secret_key = secrets.secret_key
     app.run('0.0.0.0', 5001, True)

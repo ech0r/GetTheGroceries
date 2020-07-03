@@ -1,4 +1,9 @@
 mysql/
 __pycache__/
 *.pyc
+<<<<<<< HEAD
 nginx/
+=======
+nginx/
+secrets.py
+>>>>>>> dev

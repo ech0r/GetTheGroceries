@@ -1,5 +1,5 @@
 mysql/
 __pycache__/
 *.pyc
-nginx/
+nginx/*.conf
 secrets.py

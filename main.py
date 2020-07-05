@@ -274,7 +274,7 @@ def edit_recipe():
             cursor.execute(dropoldingredients, [recipe_id])
             connection.commit()
             for i in range(len(ingredients)):
-                ingredientinsert = "INSERT INTO ingredients (user_id, recipe_id, name, amount, unit) VALUES (%s, %s, %s, %s, %s)"
+                ingredientinsert = "INSERT INTO ingredients (ingr_id, user_id, recipe_id, name, amount, unit) VALUES (UUID(), %s, %s, %s, %s, %s)"
                 cursor.execute(ingredientinsert, [user_id, recipe_id, ingredients[i], amounts[i], units[i]])
             # commit to db
             connection.commit()
@@ -346,7 +346,7 @@ def register():
             else:
                 password = encrypt(request.form['password'], username)
                 key = recoverykey()
-                cursor.execute("INSERT INTO newusers( name, email, username, password, confirmation) VALUES(%s, %s, %s, %s, %s)", (name, email, username, password, key))
+                cursor.execute("INSERT INTO newusers(id, name, email, username, password, confirmation) VALUES(UUID(),%s, %s, %s, %s, %s)", (name, email, username, password, key))
                 # Commit to DB
                 connection.commit()
                 message = "Click the link below to activate your account: \n\n" + "https://getthegroceries.io/confirm?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
@@ -431,7 +431,7 @@ def confirm():
             email = confirmation[2]
             username = confirmation[3]
             password = confirmation[4]
-            cursor.execute("INSERT INTO verifiedusers(name, email, username, password) VALUES(%s, %s, %s, %s)",(name, email, username, password))
+            cursor.execute("INSERT INTO verifiedusers(id, name, email, username, password) VALUES(UUID(), %s, %s, %s, %s)",(name, email, username, password))
             cursor.execute("DELETE FROM newusers WHERE id = %s", [identity])
             connection.commit()
             session['logged_in'] = True
@@ -650,14 +650,14 @@ def add_recipe():
             return redirect(url_for('add_recipe'))
         else:
             # insert recipe data into SQL tables
-            recipeinsert = "INSERT INTO recipes(user_id, title, description) VALUES(%s, %s, %s)"
+            recipeinsert = "INSERT INTO recipes(recipe_id, user_id, title, description) VALUES(UUID(), %s, %s, %s)"
             cursor.execute(recipeinsert, [user_id[0], title, description])
             connection.commit()
             recipequery = "SELECT recipe_id FROM recipes WHERE title = %s"
             cursor.execute(recipequery, [title])
             recipe_id = cursor.fetchone()
             for i, ingredient in enumerate(ingredients):
-                ingredientinsert = "INSERT INTO ingredients(user_id, recipe_id, name, amount, unit) VALUES(%s, %s, %s, %s, %s)"
+                ingredientinsert = "INSERT INTO ingredients(ingr_id, user_id, recipe_id, name, amount, unit) VALUES(UUID(), %s, %s, %s, %s, %s)"
                 cursor.execute(ingredientinsert, [user_id[0], recipe_id[0], ingredient, amounts[i], units[i]])
             # commit to db
             connection.commit()

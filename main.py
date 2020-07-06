@@ -613,7 +613,7 @@ def dashboard():
     descriptions = []
     recipedict = {}
     for i in recipes:
-        ids.append(recipes[i].recipe_id)
+        ids.append(recipes[i].id)
         names.append(recipes[i].name)
         descriptions.append(recipes[i].description)
         list = [recipes[i].ingredients, recipes[i].amounts, recipes[i].units]
@@ -624,8 +624,8 @@ def dashboard():
         if whatdo == 'del':
             recipename = request.form['name']
             delete_recipe(recipename, user_id)
-            return render_template('dashboard.html', ids=id, names=names, descriptions=descriptions, recipedict=recipejson)
-    return render_template('dashboard.html', ids=id, names=names, descriptions=descriptions, recipedict=recipejson)
+            return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
+    return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
 
 
 @app.route('/add_recipe', methods=['GET', 'POST'])

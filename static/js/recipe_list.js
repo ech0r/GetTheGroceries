@@ -6,11 +6,11 @@ function deleteRecipe(id)
 {
     //deletes recipe
     $.post("/dashboard", {
-        name: id,
+        id: id,
         func: "del"
         },
         function() {
-        location.reload(true);
+        location.href("/dashboard");
         });
 }
 

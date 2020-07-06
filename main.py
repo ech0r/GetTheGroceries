@@ -200,7 +200,7 @@ def delete_recipe(recipe, user_id):
     sqldb = my_sql_init()
     cursor = sqldb[0]
     connection = sqldb[1]
-    getrecipe_id = "SELECT recipe_id from recipes WHERE title=%s AND user_id=%s"
+    getrecipe_id = "SELECT recipe_id from recipes WHERE recipe_id=%s AND user_id=%s"
     deletesql1 = "DELETE FROM recipes WHERE recipe_id=%s"
     deletesql2 = "DELETE FROM ingredients WHERE recipe_id=%s"
     cursor.execute(getrecipe_id, [recipe, user_id])
@@ -623,8 +623,8 @@ def dashboard():
     if request.method == 'POST':
         whatdo = request.form['func']
         if whatdo == 'del':
-            recipename = request.form['name']
-            delete_recipe(recipename, user_id)
+            recipe_id = request.form['id']
+            delete_recipe(recipe_id, user_id)
             return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
     return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
 

@@ -10,7 +10,7 @@ function deleteRecipe(id)
         func: "del"
         },
         function() {
-        location.href("/dashboard");
+        location.href("dashboard.html");
         });
 }
 

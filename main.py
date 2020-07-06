@@ -268,7 +268,7 @@ def edit_recipe():
         units = request.form.getlist('unit')
         # checks for duplicate recipe 
         cursor.execute("SELECT * FROM recipes WHERE user_id=%s AND title=%s", [user_id, newtitle])
-        if (newtitle.lower() == recipe.lower()) or (cursor.fetchall() is None):
+        if (newtitle.lower() == title.lower()) or (cursor.fetchall() is None):
             # updates recipe data in SQL tables
             recipeupdate = "UPDATE recipes SET title=%s, description=%s WHERE recipe_id=%s;"
             cursor.execute(recipeupdate, [newtitle, newdescription, recipe_id])

@@ -230,7 +230,7 @@ def edit_recipe():
 
     # sql queries
     getuserid = "SELECT id FROM verifiedusers WHERE username=%s"
-    getrecipe = "SELECT recipe_id, description FROM recipes WHERE title=%s AND user_id=%s"
+    getrecipe = "SELECT recipe_id, description FROM recipes WHERE recipe_id=%s AND user_id=%s"
     getingredients = "SELECT * FROM ingredients WHERE recipe_id=%s"
 
     # get user_id
@@ -265,7 +265,7 @@ def edit_recipe():
         ingredients = request.form.getlist('ingr_name')
         amounts = request.form.getlist('amount')
         units = request.form.getlist('unit')
-        # checks for duplicate recipe names
+        # checks for duplicate recipe 
         cursor.execute("SELECT * FROM recipes WHERE user_id=%s AND title=%s", [user_id, newtitle])
         if (newtitle.lower() == recipe.lower()) or (cursor.fetchall() is None):
             # updates recipe data in SQL tables

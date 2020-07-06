@@ -613,7 +613,7 @@ def dashboard():
     descriptions = []
     recipedict = {}
     for i in recipes:
-        ids.append(recipes[i].recpe_id)
+        ids.append(recipes[i].recipe_id)
         names.append(recipes[i].name)
         descriptions.append(recipes[i].description)
         list = [recipes[i].ingredients, recipes[i].amounts, recipes[i].units]

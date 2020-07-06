@@ -7,6 +7,7 @@
     <h1 class="card-header">Edit Recipe</h1>
     {% from "includes/_formhelpers.html" import render_field %}
     <div class="card-body">
+        <button type="button" id="{{ id }}" onclick="deleteRecipe('{{ id }}')" style="background-color:  #f1948a;" class="btn btn-danger btn-sm btn-block">Delete</button>
         <form method="POST">
             <div class="form-group">
                 {{ render_field(form.title, class_="form-control") }}
@@ -46,7 +47,9 @@
             </div>
         </form>
     </div>
+    <script src="/static/js/recipe_list.js"></script>
     <script>
+        var id = {{ id|tojson }};
         var ingredients = {{ ingredients[1:]|tojson }};
         var amounts = {{ amounts[1:]|tojson}};
         var units = {{ units[1:]|tojson }};

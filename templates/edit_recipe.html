@@ -7,7 +7,7 @@
     <h1 class="card-header">Edit Recipe</h1>
     {% from "includes/_formhelpers.html" import render_field %}
     <div class="card-body">
-        <button type="button" id="{{ id }}" onclick="deleteRecipe('{{ id }}')" style="" class="btn btn-danger btn-sm btn-block">Delete</button>
+        <button type="button" id="{{ id }}" onclick="deleteRecipe('{{ id }}')" style="margin-bottom: 1rem;" class="btn btn-danger btn-sm btn-block">Delete</button>
         <form method="POST">
             <div class="form-group">
                 {{ render_field(form.title, class_="form-control") }}

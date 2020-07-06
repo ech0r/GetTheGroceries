@@ -230,7 +230,7 @@ def edit_recipe():
 
     # sql queries
     getuserid = "SELECT id FROM verifiedusers WHERE username=%s"
-    getrecipe = "SELECT recipe_id, description FROM recipes WHERE recipe_id=%s AND user_id=%s"
+    getrecipe = "SELECT recipe_id, title, description FROM recipes WHERE recipe_id=%s AND user_id=%s"
     getingredients = "SELECT * FROM ingredients WHERE recipe_id=%s"
 
     # get user_id
@@ -242,11 +242,12 @@ def edit_recipe():
     stuff = cursor.fetchone()
 
     recipe_id = stuff[0]
-    description = stuff[1]
+    title = stuff[1]
+    description = stuff[2]
 
     # form stuff
     form = RecipeForm(request.form)
-    form.title.data = recipe
+    form.title.data = title
     form.description.data = description
     ingredients = []
     amounts = []

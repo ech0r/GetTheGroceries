@@ -72,7 +72,9 @@ my_sql_close(connection,cursor)
 
 #Classes
 class Recipe:
-    def __init__(self,name,description,ingredients,amounts,units):
+    def __init__(self,recipe_id, user_id, name, description, ingredients, amounts, units):
+        self.id = recipe_id
+        self.user_id = user_id
         self.name = name
         self.description = description
         self.ingredients = []
@@ -146,7 +148,7 @@ def get_all_recipes(user_id):
             amount_list.append(ingredient[4])
             unit_list.append(ingredient[5])
         cursor2.close()
-        recipes[row[0]] = Recipe(row[2],row[3],ingredient_list,amount_list,unit_list)
+        recipes[row[0]] = Recipe(row[0], row[1], row[2], row[3], ingredient_list, amount_list, unit_list)
     my_sql_close(connection,cursor)
     return recipes
 
@@ -606,10 +608,12 @@ def dashboard():
     user_id = data[0]
     recipes = get_all_recipes(user_id)
     my_sql_close(connection,cursor)
+    ids = []
     names = []
     descriptions = []
     recipedict = {}
     for i in recipes:
+        ids.append(recipes[i].recpe_id)
         names.append(recipes[i].name)
         descriptions.append(recipes[i].description)
         list = [recipes[i].ingredients, recipes[i].amounts, recipes[i].units]
@@ -620,8 +624,8 @@ def dashboard():
         if whatdo == 'del':
             recipename = request.form['name']
             delete_recipe(recipename, user_id)
-            return render_template('dashboard.html', names=names, descriptions=descriptions, recipedict=recipejson)
-    return render_template('dashboard.html', names=names, descriptions=descriptions, recipedict=recipejson)
+            return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
+    return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
 
 
 @app.route('/add_recipe', methods=['GET', 'POST'])

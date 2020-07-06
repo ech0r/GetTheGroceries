@@ -2,11 +2,11 @@ var mealplan = [];
 var descriptions = [];
 var count = 0;
 var pages = 0;
-function deleteRecipe(name)
+function deleteRecipe(id)
 {
     //deletes recipe
     $.post("/dashboard", {
-        name: name,
+        name: id,
         func: "del"
         },
         function() {
@@ -14,10 +14,10 @@ function deleteRecipe(name)
         });
 }
 
-function editRecipe(name)
+function editRecipe(id)
 {
     //edits recipe
-    location.href = "/edit_recipe?recipe=" + name;
+    location.href = "/edit_recipe?recipe=" + id;
 }
 
 function recipeList()

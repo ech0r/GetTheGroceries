@@ -72,7 +72,7 @@ my_sql_close(connection,cursor)
 
 #Classes
 class Recipe:
-    def __init__(self,recipe_id, user_id, name, description, ingredients, amounts, units):
+    def __init__(self, recipe_id, user_id, name, description, ingredients, amounts, units):
         self.id = recipe_id
         self.user_id = user_id
         self.name = name
@@ -624,8 +624,8 @@ def dashboard():
         if whatdo == 'del':
             recipename = request.form['name']
             delete_recipe(recipename, user_id)
-            return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
-    return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
+            return render_template('dashboard.html', ids=id, names=names, descriptions=descriptions, recipedict=recipejson)
+    return render_template('dashboard.html', ids=id, names=names, descriptions=descriptions, recipedict=recipejson)
 
 
 @app.route('/add_recipe', methods=['GET', 'POST'])

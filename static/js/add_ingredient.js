@@ -5,6 +5,19 @@ function uuidv4() {
   }
 
 function ingredient_fields() {
+    var ingrs_exist = document.getElementsByClassName("ingredient-field") ? true: false;
+    var button = null;
+    if (ingrs_exist) {
+        button =  `
+        <button class="btn btn-danger" type="button" onclick="remove_ingredient_fields(${uuid});" id="minus-button"> 
+            <i class="fa fa-minus-square" aria-hidden="true"></i> 
+        </button>`
+    } else {
+        button =  `
+        <button class="btn btn-duccess" type="button" onclick="ingredient_fields(${uuid});" id="plus-button"> 
+            <i class="fa fa-plus-square" aria-hidden="true"></i> 
+        </button>`
+    }
     var objTo = document.getElementById('ingredient_body');
     var ingrfield = document.createElement("div");
     var uuid = uuidv4();
@@ -30,9 +43,7 @@ function ingredient_fields() {
             <option value="qty">qty</option>
         </select> 
         <div class="input-group-append"> 
-            <button class="btn btn-danger" type="button" onclick="remove_ingredient_fields(${uuid});" id="minus-button"> 
-                <i class="fa fa-minus-square" aria-hidden="true"></i> 
-            </button> 
+           
         </div>
     </div>`
     objTo.appendChild(ingrfield)
@@ -41,3 +52,5 @@ function ingredient_fields() {
 function remove_ingredient_fields(rid) {
     $('#'+rid).remove();
 }
+
+ingredient_fields();

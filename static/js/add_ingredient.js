@@ -15,7 +15,7 @@ function ingredient_fields() {
         </button>`
     } else {
         button =  `
-        <button class="btn btn-success" type="button" onclick="ingredient_fields("${uuid}");" id="plus-button"> 
+        <button class="btn btn-success" type="button" onclick="ingredient_fields();" id="plus-button"> 
             <i class="fa fa-plus-square" aria-hidden="true"></i> 
         </button>`
     }

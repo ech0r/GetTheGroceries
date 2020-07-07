@@ -18,7 +18,7 @@ function ingredient_fields() {
             ingredient_buttons[i].setAttribute("class","ingredient-button btn btn-danger");
             ingredient_buttons[i].setAttribute("onclick", "remove_ingredient_fields(this.parentElement.parentElement.parentElement.id)");
             ingredient_buttons[i].setAttribute("id", "minus-button")
-            ingredient_buttons.innerHTML = '<i class="fa fa-minus-square" aria-hidden="true"></i>'
+            ingredient_buttons[i].innerHTML = '<i class="fa fa-minus-square" aria-hidden="true"></i>'
         }
     } else {
         button =  `

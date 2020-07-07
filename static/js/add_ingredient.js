@@ -12,16 +12,16 @@ function ingredient_fields() {
         button =  `
         <button class="btn btn-danger" type="button" onclick="remove_ingredient_fields("${uuid}");" id="minus-button"> 
             <i class="fa fa-minus-square" aria-hidden="true"></i> 
-        </button>`
+        </button>`;
     } else {
         button =  `
         <button class="btn btn-success" type="button" onclick="ingredient_fields();" id="plus-button"> 
             <i class="fa fa-plus-square" aria-hidden="true"></i> 
-        </button>`
+        </button>`;
     }
     var objTo = document.getElementById('ingredient_body');
     var ingrfield = document.createElement("div");
-    ingrfield.setAttribute("id", uuid)
+    ingrfield.setAttribute("id", uuid);
     ingrfield.innerHTML = `
     <div id="" class="ingredient-field input-group"> 
         <input type="text" class="form-control" name="ingr_name" id="name" placeholder="Ingredient Name" required> 
@@ -45,7 +45,7 @@ function ingredient_fields() {
         <div class="input-group-append"> 
            ${button}
         </div>
-    </div>`
+    </div>`;
     objTo.appendChild(ingrfield)
 }
 

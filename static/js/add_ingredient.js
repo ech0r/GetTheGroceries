@@ -5,7 +5,7 @@ function uuidv4() {
   }
 
 function ingredient_fields() {
-    var ingrs_exist = document.getElementById("ingredient-body").innerHTML === "" ? true: false;
+    var ingrs_exist = document.getElementById("ingredient_body").innerHTML === "" ? true: false;
     var button = null;
     if (ingrs_exist) {
         button =  `

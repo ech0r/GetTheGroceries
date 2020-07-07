@@ -1,8 +1,5 @@
 {% extends 'layout.html' %}
-
-
 {% block body %}
-    <script src="/static/js/edit_ingredient.js"></script>
     <div class="card mx-auto border-dark mb-3 text-center" style="max-width: 90%">
     <h1 class="card-header">Edit Recipe</h1>
     {% from "includes/_formhelpers.html" import render_field %}
@@ -19,24 +16,7 @@
                 <div class="form-group">
                     <h6>Ingredients</h6>
                     <div class="stuff">
-                        <div id="ingredient_body">
-                            <div id="ingredient_field" class="input-group">
-                                <input type="text" class="form-control" name="ingr_name" id="name" value="{{ ingredients[0] }}" required>
-                                <input type="number" step="0.01" min="0" max="999" class="form-control" name="amount" id="amount" value="{{ amounts[0] }}" required>
-                                <select name="unit" class="form-control">
-                                    {% for type in unittype %}
-                                        {% if type == units[0] %}
-                                            <option selected>{{ units[0] }}</option>
-                                        {% else %}
-                                            <option>{{ type }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn btn-success btn-block" type="button" onclick="add_ingredient_fields();" id="add-button"> <i class="fa fa-plus-square" aria-hidden="true"></i> </button>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="ingredient_body"></div>
                     </div>
                     <br>
                     <div>
@@ -50,12 +30,12 @@
     <script src="/static/js/recipe_list.js"></script>
     <script>
         var id = {{ id|tojson }};
-        var ingredients = {{ ingredients[1:]|tojson }};
-        var amounts = {{ amounts[1:]|tojson}};
-        var units = {{ units[1:]|tojson }};
+        var ingredients = {{ ingredients|tojson }};
+        var amounts = {{ amounts|tojson}};
+        var units = {{ units|tojson }};
+    </script>
+        <script src="/static/js/ingredients.js"></script>
+    <script>
         edit_ingredient_fields(ingredients, amounts, units);
     </script>
-
-
-
 {% endblock %}

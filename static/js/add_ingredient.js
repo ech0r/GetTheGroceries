@@ -34,7 +34,7 @@ function ingredient_fields() {
                 <i class="fa fa-minus-square" aria-hidden="true"></i> 
             </button> 
         </div>
-    </div>'`
+    </div>`
     objTo.appendChild(ingrfield)
 }
 

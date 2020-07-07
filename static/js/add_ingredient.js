@@ -5,17 +5,17 @@ function uuidv4() {
   }
 
 function ingredient_fields() {
-        var uuid = uuidv4();
+    var uuid = uuidv4();
     var ingrs_exist = document.getElementById("ingredient_body").innerHTML ? true: false;
     var button = null;
     if (ingrs_exist) {
         button =  `
-        <button class="btn btn-danger" type="button" onclick="remove_ingredient_fields(${uuid});" id="minus-button"> 
+        <button class="btn btn-danger" type="button" onclick="remove_ingredient_fields("${uuid}");" id="minus-button"> 
             <i class="fa fa-minus-square" aria-hidden="true"></i> 
         </button>`
     } else {
         button =  `
-        <button class="btn btn-success" type="button" onclick="ingredient_fields(${uuid});" id="plus-button"> 
+        <button class="btn btn-success" type="button" onclick="ingredient_fields("${uuid}");" id="plus-button"> 
             <i class="fa fa-plus-square" aria-hidden="true"></i> 
         </button>`
     }

@@ -3,9 +3,7 @@ function uuidv4() {
       (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
   }
-  
 
-var num = 0;
 function ingredient_fields() {
     var objTo = document.getElementById('ingredient_body');
     var ingrfield = document.createElement("div");
@@ -39,7 +37,7 @@ function ingredient_fields() {
     </div>'`
     objTo.appendChild(ingrfield)
 }
-   function remove_ingredient_fields(rid) {
-	   $('.removeclass'+rid).remove();
-	   num--;
-   }
+
+function remove_ingredient_fields(rid) {
+    $('#'+rid).remove();
+}

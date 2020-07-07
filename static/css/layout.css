@@ -15,6 +15,11 @@ body, html
     background-size: cover;
 }
 
+.ingredient-field
+{
+    margin-bottom: 0.5rem;
+}
+
 #big-container 
 {
     padding: 2rem;

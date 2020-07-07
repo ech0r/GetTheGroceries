@@ -40,7 +40,7 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     <div class="input-group-append"> 
         ${button}
     </div>`;
-    ingrBody.appendChild(ingrfield)
+    ingrBody.appendChild(ingrField)
     var select = document.getElementById(uuid + "_select");
     var unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
     unittype.forEach(function(element, key) {

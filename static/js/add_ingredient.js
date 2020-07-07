@@ -10,12 +10,19 @@ function ingredient_fields() {
     var button = null;
     if (ingrs_exist) {
         button =  `
-        <button class="btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.parentElement.id);" id="minus-button"> 
+        <button class="ingredient-button btn btn-success" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.parentElement.id)" id="minus-button"> 
             <i class="fa fa-minus-square" aria-hidden="true"></i> 
         </button>`;
+        var ingredient_buttons = document.getElementsByClassName("ingredient-button");
+        for (var i=0; i<ingredient_buttons.length|0; i=i+1|0) {
+            ingredient_buttons[i].setAttribute("class","ingredient-button btn btn-danger");
+            ingredient_buttons[i].setAttribute("onclick", "remove_ingredient_fields(this.parentElement.parentElement.parentElement.id)");
+            ingredient_buttons[i].setAttribute("id", "minus-button")
+            ingredient_buttons.innerHTML = '<i class="fa fa-minus-square" aria-hidden="true"></i>'
+        }
     } else {
         button =  `
-        <button class="btn btn-success" type="button" onclick="ingredient_fields();" id="plus-button"> 
+        <button class="ingredient-button btn btn-success" type="button" onclick="ingredient_fields();" id="plus-button"> 
             <i class="fa fa-plus-square" aria-hidden="true"></i> 
         </button>`;
     }

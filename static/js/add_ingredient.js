@@ -5,6 +5,7 @@ function uuidv4() {
   }
 
 function ingredient_fields() {
+        var uuid = uuidv4();
     var ingrs_exist = document.getElementById("ingredient_body").innerHTML ? true: false;
     var button = null;
     if (ingrs_exist) {
@@ -20,7 +21,6 @@ function ingredient_fields() {
     }
     var objTo = document.getElementById('ingredient_body');
     var ingrfield = document.createElement("div");
-    var uuid = uuidv4();
     ingrfield.setAttribute("id", uuid)
     ingrfield.innerHTML = `
     <div id="" class="ingredient-field input-group"> 

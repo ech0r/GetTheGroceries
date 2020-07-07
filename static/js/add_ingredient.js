@@ -10,7 +10,7 @@ function ingredient_fields() {
     var button = null;
     if (ingrs_exist) {
         button =  `
-        <button class="btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement);" id="minus-button"> 
+        <button class="btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.parentElement.id);" id="minus-button"> 
             <i class="fa fa-minus-square" aria-hidden="true"></i> 
         </button>`;
     } else {

@@ -55,4 +55,4 @@ function remove_ingredient_fields(rid) {
     $('#'+rid).remove();
 }
 
-//ingredient_fields();
+ingredient_fields();

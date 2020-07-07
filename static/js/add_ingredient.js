@@ -50,7 +50,8 @@ function ingredient_fields() {
 }
 
 function remove_ingredient_fields(rid) {
-    $('#'+rid).remove();
+    var element = document.getElementById(rid);
+    element.remove();
 }
 
 ingredient_fields();

@@ -6,8 +6,6 @@ function uuidv4() {
 
 function ingredient_fields() {
     var ingrs_exist = document.getElementById("ingredient_body").innerHTML ? true: false;
-    console.log(document.getElementById("ingredient_body").innerHTML );
-    console.log(ingrs_exist);
     var button = null;
     if (ingrs_exist) {
         button =  `

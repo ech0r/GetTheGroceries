@@ -44,6 +44,7 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var select = document.getElementById(uuid + "_select");
     var unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
     var selected_unit = unittype[unit_index];
+    console.log(selected_unit);
     unittype.forEach(function(element, key, selected_unit) {
         console.log(key);
         console.log(element);

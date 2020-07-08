@@ -15,7 +15,7 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var ingrs_exist = document.getElementById("ingredient_body").innerHTML ? true: false;
 
     var button = null;
-    if (ingrs_exist && ingrs_exist > 1) {
+    if (ingrs_exist && ingrs.length > 0) {
         button =  `
         <button class="ingredient-button btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
             <i class="fa fa-minus-square" aria-hidden="true"></i> 

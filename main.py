@@ -679,7 +679,7 @@ def activity():
     sqldb = my_sql_init()
     cursor = sqldb[0]
     connection = sqldb[1]
-    get_all_recipes = "SELECT username, r.title, r.date_created FROM recipes r LEFT JOIN verifiedusers v ON v.id = r.user_id ORDER BY date_created DESC;"
+    get_all_recipes = "SELECT v.username, r.title, r.date_created FROM recipes r LEFT JOIN verifiedusers v ON v.id = r.user_id ORDER BY date_created DESC;"
     cursor.execute(get_all_recipes)
     recipes = list(map(list, zip(*cursor.fetchall())))
     usernames = recipes[0]

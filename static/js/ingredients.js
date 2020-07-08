@@ -67,7 +67,7 @@ function remove_ingredient_fields(rid) {
         var buffer = document.getElementById("message-buffer");
         buffer.innerHTML = `<div class="alert alert-danger">Recipes must have at least one ingredient.</div>`;
         setTimeout(function(){
-            document.getElementById("message-buffer").innerHTML = "";
+            $('.alert').delay(2000).fadeOut();
         }, 2000);
     }
 }

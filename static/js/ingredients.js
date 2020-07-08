@@ -9,7 +9,11 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var ingr_value = ingredient ? `value="${ingredient}"`:`placeholder="Name"`;
     var amount_value = amount ? `value="${amount}"`:`placeholder=Amount`;
     var unit_index = unit;
+    var ingrs = document.getElementById("ingredient_body").innerHTML;
+    console.log(ingrs);
+    console.log(typeof ingrs);
     var ingrs_exist = document.getElementById("ingredient_body").innerHTML ? true: false;
+
     var button = null;
     if (ingrs_exist && ingrs_exist > 1) {
         button =  `

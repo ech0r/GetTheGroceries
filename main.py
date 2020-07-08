@@ -675,7 +675,7 @@ def add_recipe():
 # activity stream
 @app.route('/activity', methods = ['GET', 'POST'])
 @is_logged_in
-def dashboard():
+def activity():
     sqldb = my_sql_init()
     cursor = sqldb[0]
     connection = sqldb[1]

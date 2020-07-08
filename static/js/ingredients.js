@@ -10,12 +10,8 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var amount_value = amount ? `value="${amount}"`:`placeholder=Amount`;
     var unit_index = unit;
     var ingrs = document.getElementsByClassName("ingredient-field");
-    console.log(ingrs);
-    console.log(typeof ingrs);
-    var ingrs_exist = document.getElementById("ingredient_body").innerHTML ? true: false;
-
     var button = null;
-    if (ingrs_exist && ingrs.length > 0) {
+    if (ingrs.length > 0) {
         button =  `
         <button class="ingredient-button btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
             <i class="fa fa-minus-square" aria-hidden="true"></i> 
@@ -61,7 +57,6 @@ function edit_ingredient_fields(ingredients, amounts, units)
 }
 
 function remove_ingredient_fields(rid) {
-    console.log(rid);
     var element = document.getElementById(rid);
     element.remove();
 }

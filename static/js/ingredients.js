@@ -11,24 +11,19 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var unit_index = unit;
     var ingrs_exist = document.getElementById("ingredient_body").innerHTML ? true: false;
     var button = null;
-        if (ingrs_exist) {
-            button =  `
-            <button class="ingredient-button btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
-                <i class="fa fa-minus-square" aria-hidden="true"></i> 
-            </button>`;
-            var ingredient_buttons = document.getElementsByClassName("ingredient-button");
-            for (var i=0; i < ingredient_buttons.length|0; i = i + 1|0) {
-                ingredient_buttons[i].setAttribute("class","ingredient-button btn btn-danger");
-                ingredient_buttons[i].setAttribute("onclick", "remove_ingredient_fields(this.parentElement.parentElement.id)");
-                ingredient_buttons[i].setAttribute("id", "minus-button")
-                ingredient_buttons[i].innerHTML = '<i class="fa fa-minus-square" aria-hidden="true"></i>'
-            }
-        } else {
-            button =  `
-            <button class="ingredient-button btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
-                <i class="fa fa-minus-square" aria-hidden="true"></i> 
-            </button>`;
+    if (ingrs_exist && ingrs_exist > 1) {
+        button =  `
+        <button class="ingredient-button btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
+            <i class="fa fa-minus-square" aria-hidden="true"></i> 
+        </button>`;
+        var ingredient_buttons = document.getElementsByClassName("ingredient-button");
+        for (var i=0; i < ingredient_buttons.length|0; i = i + 1|0) {
+            ingredient_buttons[i].setAttribute("class","ingredient-button btn btn-danger");
+            ingredient_buttons[i].setAttribute("onclick", "remove_ingredient_fields(this.parentElement.parentElement.id)");
+            ingredient_buttons[i].setAttribute("id", "minus-button")
+            ingredient_buttons[i].innerHTML = '<i class="fa fa-minus-square" aria-hidden="true"></i>'
         }
+    }
     var ingrBody = document.getElementById('ingredient_body');
     var ingrField = document.createElement("div");
     ingrField.setAttribute("id", uuid);

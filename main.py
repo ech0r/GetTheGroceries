@@ -200,7 +200,7 @@ def delete_recipe(recipe, user_id):
     sqldb = my_sql_init()
     cursor = sqldb[0]
     connection = sqldb[1]
-    getrecipe_id = "SELECT recipe_id from recipes WHERE recipe_id=%s AND user_id=%s"
+    getrecipe_id = "SELECT recipe_id from recipes WHERE title=%s AND user_id=%s"
     deletesql1 = "DELETE FROM recipes WHERE recipe_id=%s"
     deletesql2 = "DELETE FROM ingredients WHERE recipe_id=%s"
     cursor.execute(getrecipe_id, [recipe, user_id])
@@ -242,12 +242,11 @@ def edit_recipe():
     stuff = cursor.fetchone()
 
     recipe_id = stuff[0]
-    title = stuff[1]
-    description = stuff[2]
+    description = stuff[1]
 
     # form stuff
     form = RecipeForm(request.form)
-    form.title.data = title
+    form.title.data = recipe
     form.description.data = description
     ingredients = []
     amounts = []
@@ -268,7 +267,7 @@ def edit_recipe():
         units = request.form.getlist('unit')
         # checks for duplicate recipe 
         cursor.execute("SELECT * FROM recipes WHERE user_id=%s AND title=%s", [user_id, newtitle])
-        if (newtitle.lower() == title.lower()) or (cursor.fetchall() is None):
+        if (newtitle.lower() == recipe.lower()) or (cursor.fetchall() is None):
             # updates recipe data in SQL tables
             recipeupdate = "UPDATE recipes SET title=%s, description=%s WHERE recipe_id=%s;"
             cursor.execute(recipeupdate, [newtitle, newdescription, recipe_id])
@@ -286,10 +285,10 @@ def edit_recipe():
             return redirect(url_for('dashboard'))
         else:
             flash('The title "' + newtitle + '" has already been used by you, pick a different title.', 'danger')
-            return render_template('edit_recipe.html', id=recipe_id, form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
+            return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
     else:
         my_sql_close(connection,cursor)
-        return render_template('edit_recipe.html', id=recipe_id, form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
+        return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
 
 
 
@@ -623,8 +622,8 @@ def dashboard():
     if request.method == 'POST':
         whatdo = request.form['func']
         if whatdo == 'del':
-            recipe_id = request.form['id']
-            delete_recipe(recipe_id, user_id)
+            recipename = request.form['name']
+            delete_recipe(recipename, user_id)
             return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
     return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
 
@@ -645,9 +644,6 @@ def add_recipe():
         ingredients = request.form.getlist('ingr_name')
         amounts = request.form.getlist('amount')
         units = request.form.getlist('unit')
-        if ((len(ingredients) + len(amounts) + len(units)) < 3):
-            flash("Recipe must have at least one ingredient.", 'danger')
-            return render_template('add_recipe.html', form=form, units=units)
         usernamequery = "SELECT id FROM verifiedusers WHERE username = %s"
         cursor.execute(usernamequery, [user])
         user_id = cursor.fetchone()
@@ -676,6 +672,22 @@ def add_recipe():
         my_sql_close(connection,cursor)
         return render_template('add_recipe.html', form=form, units=units)
 
+# activity stream
+@app.route('/activity', methods = ['GET', 'POST'])
+@is_logged_in
+def dashboard():
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
+    get_all_recipes = "SELECT name, r.title, r.date_created FROM recipes r LEFT JOIN verifiedusers v ON v.id = r.user_id ORDER BY date_created DESC;"
+    cursor.execute(get_all_recipes)
+    recipes = list(map(list, zip(*cursor.fetchall())))
+    usernames = recipes[0]
+    titles = recipes[1]
+    dates = recipes[2]
+    connection.commit()
+    my_sql_close(connection, cursor)
+    return render_template('activity.html', usernames=usernames, titles=titles, dates=dates)
 
 if __name__ == '__main__':
     app.secret_key = secrets.secret_key

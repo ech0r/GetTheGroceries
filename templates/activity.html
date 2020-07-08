@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<script src="static/js/pdfmake.min.js"></script>
+<script src="static/js/vfs_fonts.js"></script>
+<div class="card mx-auto border-dark mb-3" style="max-width: 90%;">
+    <div class="card-body">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Recipe</th>
+            <th scope="col"># of ingredients</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for name in usernames %}
+            <tr>
+            <th scope="row">{{ loop.index}</th>
+            <td>{{ name }}</td>
+            <td>{{ titles[loop.index-1] }}</td>
+            <td>{{ dates[loop.index-1] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+</div>
+{% endblock%}

@@ -44,6 +44,7 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     ingrBody.appendChild(ingrField)
     var select = document.getElementById(uuid + "_select");
     var unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
+    console.log(unittype[unit_value]);
     unittype.forEach(function(element, key) {
         if (element === unittype[unit_value]) {
             console.log("Selected Option BRAH");

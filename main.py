@@ -645,6 +645,9 @@ def add_recipe():
         ingredients = request.form.getlist('ingr_name')
         amounts = request.form.getlist('amount')
         units = request.form.getlist('unit')
+        if ((len(ingredients) + len(amounts) + len(units)) < 3):
+            flash("Recipe must have at least one ingredient.", 'danger')
+            return render_template('add_recipe.html', form=form, units=units)
         usernamequery = "SELECT id FROM verifiedusers WHERE username = %s"
         cursor.execute(usernamequery, [user])
         user_id = cursor.fetchone()

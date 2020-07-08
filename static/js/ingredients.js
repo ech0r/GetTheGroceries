@@ -10,7 +10,10 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var amount_value = amount ? `value="${amount}"`:`placeholder=Amount`;
     var unit_index = unit;
     var ingrs = document.getElementsByClassName("ingredient-field");
-    var button = null;
+    var button =  `
+        <button class="ingredient-button btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
+            <i class="fa fa-minus-square" aria-hidden="true"></i> 
+        </button>`;
     if (ingrs.length > 0) {
         button =  `
         <button class="ingredient-button btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
@@ -23,7 +26,7 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
             ingredient_buttons[i].setAttribute("id", "minus-button")
             ingredient_buttons[i].innerHTML = '<i class="fa fa-minus-square" aria-hidden="true"></i>'
         }
-    }
+    } 
     var ingrBody = document.getElementById('ingredient_body');
     var ingrField = document.createElement("div");
     ingrField.setAttribute("id", uuid);
@@ -58,5 +61,10 @@ function edit_ingredient_fields(ingredients, amounts, units)
 
 function remove_ingredient_fields(rid) {
     var element = document.getElementById(rid);
-    element.remove();
+    if (document.getElementsByClassName("ingredient-field").length > 1) {
+        element.remove();
+    } else {
+        var buffer = document.getElementById("top-buffer")
+        buffer.innerHTML = `<div class="alert alert-danger">Recipes must have at least one ingredient.</div>`
+    }
 }

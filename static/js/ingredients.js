@@ -28,13 +28,14 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var ingrField = document.createElement("div");
     ingrField.setAttribute("id", uuid);
     ingrField.setAttribute("class", "ingredient-field input-group");
-    ingrField.innerHTML = `
+    var ingrFieldHtml = button ? `
     <input type="text" class="form-control" name="ingr_name" id="name" ${ingr_value} required> 
     <input type="number" step="0.01" min="0" max="999" class="form-control" name="amount" id="amount" ${amount_value} required> 
     <select id="${uuid}_select" required name="unit" class="form-control"></select> 
-    <div class="input-group-append"> 
-        ${button}
-    </div>`;
+    <div class="input-group-append"> ${button}</div>`:`<input type="text" class="form-control" name="ingr_name" id="name" ${ingr_value} required> 
+    <input type="number" step="0.01" min="0" max="999" class="form-control" name="amount" id="amount" ${amount_value} required> 
+    <select id="${uuid}_select" required name="unit" class="form-control"></select>`;
+    ingrField.innerHTML = ingrFieldHtml;
     ingrBody.appendChild(ingrField)
     var select = document.getElementById(uuid + "_select");
     var unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']

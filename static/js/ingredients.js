@@ -13,7 +13,7 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var button = null;
         if (ingrs_exist) {
             button =  `
-            <button class="ingredient-button btn btn-success" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
+            <button class="ingredient-button btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
                 <i class="fa fa-minus-square" aria-hidden="true"></i> 
             </button>`;
             var ingredient_buttons = document.getElementsByClassName("ingredient-button");
@@ -25,7 +25,7 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
             }
         } else {
             button =  `
-            <button class="ingredient-button btn btn-success" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
+            <button class="ingredient-button btn btn-danger" type="button" onclick="remove_ingredient_fields(this.parentElement.parentElement.id)" id="minus-button"> 
                 <i class="fa fa-minus-square" aria-hidden="true"></i> 
             </button>`;
         }

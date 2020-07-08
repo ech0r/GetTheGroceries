@@ -8,8 +8,7 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var uuid = uuidv4();
     var ingr_value = ingredient ? `value="${ingredient}"`:`placeholder="Name"`;
     var amount_value = amount ? `value="${amount}"`:`placeholder=Amount`;
-    var unit_value = unit;
-    console.log(unit_value);
+    var unit_index = unit;
     var ingrs_exist = document.getElementById("ingredient_body").innerHTML ? true: false;
     var button = null;
     if (ingrs_exist) {
@@ -44,9 +43,11 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     ingrBody.appendChild(ingrField)
     var select = document.getElementById(uuid + "_select");
     var unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
-    console.log(unittype[unit_value]);
-    unittype.forEach(function(element, key, unit_value) {
-        if (element === unittype[unit_value]) {
+    var selected_unit = unittype[unit_index];
+    unittype.forEach(function(element, key, selected_unit) {
+        console.log(key);
+        console.log(element);
+        if (element == selected_unit) {
             console.log("Selected Option BRAH");
             select[key] = new Option(element,key, true, true);
         } else {

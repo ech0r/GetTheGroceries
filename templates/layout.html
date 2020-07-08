@@ -13,8 +13,10 @@
 <script type="text/javascript" src="/static/bootstrap-confirmation/bootstrap-confirmation.js"></script>
 <body class="bg">
 {% include 'includes/_navbar.html' %}
-<div id="top-buffer" class="top-buffer">
-{% include 'includes/_messages.html' %}
+<div class="top-buffer">
+    <div id="message-buffer">
+        {% include 'includes/_messages.html' %}
+    </div>
 {% block body %}{% endblock %}
 </div>
 </body>

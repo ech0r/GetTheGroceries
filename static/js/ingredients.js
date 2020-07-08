@@ -46,7 +46,7 @@ function ingredient_fields(ingredient=false, amount=false, unit=false) {
     var selected_unit = unittype[unit_index];
     console.log(typeof selected_unit);
     unittype.forEach(function(element, key, selected_unit) {
-        console.log(typeof selected_unit[unit_index]);
+        console.log(typeof unittype[unit_index]);
         if (element == selected_unit) {
             console.log("Selected Option BRAH");
             select[key] = new Option(element,key, true, true);

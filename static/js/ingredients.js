@@ -64,7 +64,10 @@ function remove_ingredient_fields(rid) {
     if (document.getElementsByClassName("ingredient-field").length > 1) {
         element.remove();
     } else {
-        var buffer = document.getElementById("message-buffer")
-        buffer.innerHTML = `<div class="alert alert-danger">Recipes must have at least one ingredient.</div>`
+        var buffer = document.getElementById("message-buffer");
+        buffer.innerHTML = `<div class="alert alert-danger">Recipes must have at least one ingredient.</div>`;
+        setTimeout(function(buffer){
+            buffer.innerHTML = "";
+        }, 2000);
     }
 }

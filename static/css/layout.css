@@ -30,8 +30,8 @@ body, html
     margin-top: 5rem;
 }
 
-table {
-    font-size: calc(10px + (26 - 10) * ((100vw - 300px) / (1600 - 300)));
+table, table button {
+    font-size: calc(11px + (26 - 11) * ((100vw - 300px) / (1600 - 300)));
     line-height: calc(1.3em + (1.5 - 1.2) * ((100vw - 300px)/(1600 - 300)));
 }
 

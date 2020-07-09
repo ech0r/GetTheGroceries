@@ -679,15 +679,15 @@ def activity():
     sqldb = my_sql_init()
     cursor = sqldb[0]
     connection = sqldb[1]
-    get_all_recipes = "SELECT v.username, r.title, r.date_created FROM recipes r LEFT JOIN verifiedusers v ON v.id = r.user_id ORDER BY date_created DESC;"
+    get_all_recipes = "SELECT v.username, r.title, r.recipe_id FROM recipes r LEFT JOIN verifiedusers v ON v.id = r.user_id ORDER BY date_created DESC;"
     cursor.execute(get_all_recipes)
     recipes = list(map(list, zip(*cursor.fetchall())))
     usernames = recipes[0]
     titles = recipes[1]
-    dates = recipes[2]
+    ids = recipes[2]
     connection.commit()
     my_sql_close(connection, cursor)
-    return render_template('activity.html', usernames=usernames, titles=titles, dates=dates)
+    return render_template('activity.html', usernames=usernames, titles=titles, ids=ids)
 
 if __name__ == '__main__':
     app.secret_key = secrets.secret_key

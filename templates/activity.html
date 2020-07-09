@@ -9,10 +9,8 @@
     <table class="table table-reponsive">
         <thead>
             <tr>
-            <th scope="col">#</th>
-            <th scope="col">Username</th>
+            <th scope="col">User</th>
             <th scope="col">Recipe</th>
-            <th scope="col">Date</th>
             </tr>
         </thead>
         <tbody>
@@ -21,10 +19,15 @@
             <th scope="row">{{ loop.index}}</th>
             <td>{{ name }}</td>
             <td>{{ titles[loop.index-1] }}</td>
-            <td>{{ dates[loop.index-1] }}</td>
+            <td><button id={{ids[loop.index-1]}} class="btn btn-outline-secondary btn-small" type="button" onclick="view_recipe(this.id)">View</button></td>
             </tr>
             {% endfor %}
         </tbody>
     </table> 
 </div>
+<script>
+    function view_recipe(id) {
+        location.href=`view_recipe?recipe=${id}`
+    }
+</script>
 {% endblock%}

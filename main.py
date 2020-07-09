@@ -673,9 +673,25 @@ def add_recipe():
         return render_template('add_recipe.html', form=form, units=units)
 
 # activity stream
-@app.route('/activity', methods = ['GET', 'POST'])
+@app.route('/activity', methods = ['GET'])
 @is_logged_in
 def activity():
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
+    get_all_recipes = "SELECT v.username, r.title, r.recipe_id FROM recipes r LEFT JOIN verifiedusers v ON v.id = r.user_id ORDER BY date_created DESC;"
+    cursor.execute(get_all_recipes)
+    recipes = list(map(list, zip(*cursor.fetchall())))
+    usernames = recipes[0]
+    titles = recipes[1]
+    ids = recipes[2]
+    connection.commit()
+    my_sql_close(connection, cursor)
+    return render_template('activity.html', usernames=usernames, titles=titles, ids=ids)
+
+@app.route('/view_recipe', methods = ['GET', 'POST'])
+@is_logged_in
+def view_recipe():
     sqldb = my_sql_init()
     cursor = sqldb[0]
     connection = sqldb[1]

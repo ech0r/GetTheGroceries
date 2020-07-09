@@ -42,6 +42,14 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+td {
+  white-space: normal !important; 
+  word-wrap: break-word;  
+}
+table {
+  table-layout: fixed;
+}
+
 @media only screen and (max-width: 800px) 
 {
 

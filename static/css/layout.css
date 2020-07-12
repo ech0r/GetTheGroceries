@@ -21,7 +21,8 @@ body, html
 }
 
 .card {
-    margin: 1rem;
+    max-width: 75%;
+    margin: auto;
 }
 
 #big-container 
@@ -61,10 +62,9 @@ table {
 
 @media only screen and (max-width: 800px) 
 {
-    
-    .card
-    {
-        max-width: 75%;
+    .card {
+        max-width: none;
+        margin: 1rem;
     }
 
     .form-inline

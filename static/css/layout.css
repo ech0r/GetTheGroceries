@@ -61,6 +61,11 @@ table {
 
 @media only screen and (max-width: 800px) 
 {
+    
+    .card
+    {
+        max-width: 75%;
+    }
 
     .form-inline
     {

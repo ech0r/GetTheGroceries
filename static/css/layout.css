@@ -21,7 +21,7 @@ body, html
 }
 
 .card {
-    max-width: 75%;
+    max-width: 10rem;
     margin: auto;
 }
 

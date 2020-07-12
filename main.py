@@ -252,7 +252,7 @@ def edit_recipe():
             recipe_id = request.form['id']
             delete_recipe(recipe_id, user_id)
             flash('Recipe Deleted', 'success')
-            return redirect(url_for('dashboard')))
+            return redirect(url_for('dashboard'))
         # Get all the form data
         newtitle = request.form['title']
         newdescription = request.form['description'] 

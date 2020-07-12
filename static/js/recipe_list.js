@@ -5,7 +5,7 @@ var pages = 0;
 function deleteRecipe(id)
 {
     //deletes recipe
-    $.post("/dashboard", {
+    $.post("/edit_recipe", {
         id: id,
         func: "del"
     });

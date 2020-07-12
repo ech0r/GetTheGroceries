@@ -234,7 +234,7 @@ def edit_recipe():
     # get recipe
     cursor.execute(get_recipe, [recipe, user])
     # transpose recipe data
-    recipe_data = list(map(list, zip(*cursor.fetchall()))))
+    recipe_data = list(map(list, zip(*cursor.fetchall())))
 
     # form stuff
     form = RecipeForm(request.form)

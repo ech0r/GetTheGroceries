@@ -692,18 +692,17 @@ def activity():
 @app.route('/view_recipe', methods = ['GET', 'POST'])
 @is_logged_in
 def view_recipe():
+    recipe_id = request.args.get('recipe')
     sqldb = my_sql_init()
     cursor = sqldb[0]
     connection = sqldb[1]
-    get_all_recipes = "SELECT v.username, r.title, r.recipe_id FROM recipes r LEFT JOIN verifiedusers v ON v.id = r.user_id ORDER BY date_created DESC;"
-    cursor.execute(get_all_recipes)
-    recipes = list(map(list, zip(*cursor.fetchall())))
-    usernames = recipes[0]
-    titles = recipes[1]
-    ids = recipes[2]
+    get_all_recipes = "select r.title, r.description, i.name, i.amount, i.unit FROM ingredients i INNER JOIN recipes r WHERE r.recipe_id = %s AND i.recipe_id = %s"
+    cursor.execute(get_all_recipes, [recipe_id, recipe_id])
+    ingredients = list(map(list, zip(*cursor.fetchall())))
+    
     connection.commit()
     my_sql_close(connection, cursor)
-    return render_template('activity.html', usernames=usernames, titles=titles, ids=ids)
+    return render_template('view_recipe.html', ingredients=ingredients)
 
 if __name__ == '__main__':
     app.secret_key = secrets.secret_key

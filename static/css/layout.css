@@ -20,6 +20,10 @@ body, html
     margin-bottom: 0.5rem;
 }
 
+.card {
+    margin: 1rem;
+}
+
 #big-container 
 {
     padding: 2rem;

@@ -201,7 +201,7 @@ def passwordverify(username, storedhash, password_candidate):
 def index():
     return render_template('home.html')
 
-@app.route('/delete_recipe?', methods=['GET'])
+@app.route('/delete_recipe', methods=['GET'])
 @is_logged_in
 def delete_recipe():
     sqldb = my_sql_init()

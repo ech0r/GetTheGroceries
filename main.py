@@ -201,6 +201,7 @@ def passwordverify(username, storedhash, password_candidate):
 def index():
     return render_template('home.html')
 
+
 @app.route('/delete_recipe', methods=['GET'])
 @is_logged_in
 def delete_recipe():
@@ -209,10 +210,15 @@ def delete_recipe():
     connection = sqldb[1]
     recipe_id = request.args.get('recipe')
     deletesql = "DELETE r.*, i.* FROM recipes r INNER JOIN ingredients i WHERE r.recipe_id=i.recipe_id AND r.recipe_id=%s AND r.user_id=(SELECT id FROM verifiedusers WHERE username=%s)"
-    cursor.execute(deletesql, [recipe_id, session['username']])
+    affected_count = cursor.execute(deletesql, [recipe_id, session['username']])
     connection.commit()
     my_sql_close(connection,cursor)
+    if affected_count > 0:
+        flash('Recipe deleted', 'success')
+    else:
+        flash('Could not delete recipe', 'danger')
     return redirect(url_for('dashboard'))
+    
 
 @app.route('/edit_recipe', methods=['GET', 'POST'])
 @is_logged_in

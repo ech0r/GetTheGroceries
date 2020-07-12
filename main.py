@@ -248,7 +248,7 @@ def edit_recipe():
     form = RecipeForm(request.form)
     form.title.data = recipe
     form.description.data = description
-    print(form)
+    raise Exception(form)
     ingredients = []
     amounts = []
     units = []

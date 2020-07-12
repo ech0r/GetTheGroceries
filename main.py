@@ -611,8 +611,8 @@ def dashboard():
     if request.method == 'POST':
         whatdo = request.form['func']
         if whatdo == 'del':
-            recipename = request.form['name']
-            delete_recipe(recipename, user_id)
+            recipe_id = request.form['id']
+            delete_recipe(recipe_id, user_id)
             return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
     return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
 

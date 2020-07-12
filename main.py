@@ -196,17 +196,12 @@ def passwordverify(username, storedhash, password_candidate):
         return False
 
 
-def delete_recipe(recipe, user_id):
+def delete_recipe(recipe_id, user_id):
     sqldb = my_sql_init()
     cursor = sqldb[0]
     connection = sqldb[1]
-    getrecipe_id = "SELECT recipe_id from recipes WHERE title=%s AND user_id=%s"
-    deletesql1 = "DELETE FROM recipes WHERE recipe_id=%s"
-    deletesql2 = "DELETE FROM ingredients WHERE recipe_id=%s"
-    cursor.execute(getrecipe_id, [recipe, user_id])
-    recipe_id = cursor.fetchone()[0]
-    cursor.execute(deletesql1, [recipe_id])
-    cursor.execute(deletesql2, [recipe_id])
+    deletesql = "DELETE r.*, i.* FROM recipes r INNER JOIN ingredients i WHERE r.recipe_id=i.recipe_id AND r.recipe_id=%s AND r.user_id=%s"
+    cursor.execute(deletesql [recipe_id, user_id])
     connection.commit()
     my_sql_close(connection,cursor)
 

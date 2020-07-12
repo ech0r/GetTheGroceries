@@ -242,13 +242,13 @@ def edit_recipe():
     stuff = cursor.fetchone()
 
     recipe_id = stuff[0]
-    description = stuff[1]
+    title = stuff[1]
+    description = stuff[2]
 
     # form stuff
     form = RecipeForm(request.form)
-    form.title.data = recipe
+    form.title.data = title
     form.description.data = description
-    raise Exception(form.title.data)
     ingredients = []
     amounts = []
     units = []
@@ -289,7 +289,6 @@ def edit_recipe():
             return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
     else:
         my_sql_close(connection,cursor)
-        print(form)
         return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
 
 

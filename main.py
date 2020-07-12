@@ -218,7 +218,7 @@ def delete_recipe():
         flash('Recipe could not be deleted', 'danger')
         return redirect(url_for('dashboard'))
 
-@app.route('/edit_recipe', methods=['GET', 'POST', 'DELETE'])
+@app.route('/edit_recipe', methods=['GET', 'POST'])
 @is_logged_in
 def edit_recipe():
 

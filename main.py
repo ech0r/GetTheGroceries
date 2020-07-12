@@ -248,6 +248,7 @@ def edit_recipe():
     form = RecipeForm(request.form)
     form.title.data = recipe
     form.description.data = description
+    print(form)
     ingredients = []
     amounts = []
     units = []
@@ -288,7 +289,8 @@ def edit_recipe():
             return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
     else:
         my_sql_close(connection,cursor)
-        return render_template('edit_recipe.html', ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
+        print(form)
+        return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
 
 
 

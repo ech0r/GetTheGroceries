@@ -209,7 +209,7 @@ def delete_recipe():
     connection = sqldb[1]
     recipe_id = request.args.get('recipe')
     deletesql = "DELETE r.*, i.* FROM recipes r INNER JOIN ingredients i WHERE r.recipe_id=i.recipe_id AND r.recipe_id=%s AND r.user_id=(SELECT id FROM verifiedusers WHERE username=%s)"
-    cursor.execute(deletesql [recipe_id, str(session['username'])])
+    cursor.execute(deletesql, [recipe_id, session['username']])
     connection.commit()
     my_sql_close(connection,cursor)
     return redirect(url_for('dashboard'))

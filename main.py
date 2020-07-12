@@ -196,36 +196,31 @@ def passwordverify(username, storedhash, password_candidate):
         return False
 
 
-def delete_recipe(recipe_id, user_id):
-    sqldb = my_sql_init()
-    cursor = sqldb[0]
-    connection = sqldb[1]
-    deletesql = "DELETE r.*, i.* FROM recipes r INNER JOIN ingredients i WHERE r.recipe_id=i.recipe_id AND r.recipe_id=%s AND r.user_id=%s"
-    try:
-        cursor.execute(deletesql [recipe_id, user_id])
-        connection.commit()
-        my_sql_close(connection,cursor)
-        return True
-    except:
-        my_sql_close(connection, cursor)
-        return False
-
-
 # Flask routes
 @app.route('/')
 def index():
     return render_template('home.html')
 
+@app.route('/delete_recipe?', methods=['GET'])
+@is_logged_in
+def delete_recipe():
+    sqldb = my_sql_init()
+    cursor = sqldb[0]
+    connection = sqldb[1]
+    recipe_id = request.args.get('recipe')
+    deletesql = "DELETE r.*, i.* FROM recipes r INNER JOIN ingredients i WHERE r.recipe_id=i.recipe_id AND r.recipe_id=%s AND r.user_id=(SELECT id FROM verifiedusers WHERE username=%s)"
+    try:
+        cursor.execute(deletesql [recipe_id, session['username']])
+        connection.commit()
+        my_sql_close(connection,cursor)
+        return redirect(url_for('dashboard'))
+    except:
+        flash('Recipe could not be deleted', 'danger')
+        return redirect(url_for('dashboard'))
 
-@app.route('/edit_recipe', methods=['GET', 'POST'])
+@app.route('/edit_recipe', methods=['GET', 'POST', 'DELETE'])
 @is_logged_in
 def edit_recipe():
-    
-    if request.form['func'] == 'del':
-        recipe_id = request.form['id']
-        delete_recipe(recipe_id, user_id)
-        flash('Recipe Deleted', 'success')
-        return redirect(url_for('dashboard'))
 
     recipe = request.args.get('recipe')
     user = session['username']

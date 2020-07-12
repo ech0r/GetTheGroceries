@@ -5,10 +5,7 @@ var pages = 0;
 function deleteRecipe(id)
 {
     //deletes recipe
-    $.post("/edit_recipe", {
-        id: id,
-        func: "del"
-    });
+    location.href = "/delete_recipe?recipe=" + id;
 }
 
 function editRecipe(id)

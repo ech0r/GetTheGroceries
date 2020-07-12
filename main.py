@@ -275,7 +275,6 @@ def edit_recipe():
             return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
     else:
         my_sql_close(connection,cursor)
-        raise ValueError(form, ingredients, amounts, units, unittype)
         return render_template('edit_recipe.html', form=form, ingredients=ingredients, amounts=amounts, units=units, unittype=unittype)
 
 

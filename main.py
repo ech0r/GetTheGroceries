@@ -221,12 +221,12 @@ def index():
 @is_logged_in
 def edit_recipe():
     
-    if request.form['func'] == 'del' and request.method == 'POST':
+    if request.form['func'] == 'del':
         recipe_id = request.form['id']
         delete_recipe(recipe_id, user_id)
         flash('Recipe Deleted', 'success')
         return redirect(url_for('dashboard'))
-    
+
     recipe = request.args.get('recipe')
     user = session['username']
 

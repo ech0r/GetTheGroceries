@@ -247,8 +247,8 @@ def edit_recipe():
 
     # form stuff
     form = RecipeForm(request.form)
-    form.title.data = title
-    form.description.data = description
+    form['title'] = title
+    form['description'] = description
     ingredients = []
     amounts = []
     units = []

@@ -201,9 +201,14 @@ def delete_recipe(recipe_id, user_id):
     cursor = sqldb[0]
     connection = sqldb[1]
     deletesql = "DELETE r.*, i.* FROM recipes r INNER JOIN ingredients i WHERE r.recipe_id=i.recipe_id AND r.recipe_id=%s AND r.user_id=%s"
-    cursor.execute(deletesql [recipe_id, user_id])
-    connection.commit()
-    my_sql_close(connection,cursor)
+    try:
+        cursor.execute(deletesql [recipe_id, user_id])
+        connection.commit()
+        my_sql_close(connection,cursor)
+        return True
+    except:
+        my_sql_close(connection, cursor)
+        return False
 
 
 # Flask routes
@@ -243,6 +248,11 @@ def edit_recipe():
     unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
 
     if request.method == 'POST' and form.validate():
+        if request.form['func'] == 'del':
+            recipe_id = request.form['id']
+            delete_recipe(recipe_id, user_id)
+            flash('Recipe Deleted', 'success')
+            return redirect(url_for('dashboard')))
         # Get all the form data
         newtitle = request.form['title']
         newdescription = request.form['description'] 
@@ -603,12 +613,6 @@ def dashboard():
         list = [recipes[i].ingredients, recipes[i].amounts, recipes[i].units]
         recipedict[recipes[i].name] = list
     recipejson = json.dumps(recipedict)
-    if request.method == 'POST':
-        whatdo = request.form['func']
-        if whatdo == 'del':
-            recipe_id = request.form['id']
-            delete_recipe(recipe_id, user_id)
-            return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
     return render_template('dashboard.html', ids=ids, names=names, descriptions=descriptions, recipedict=recipejson)
 
 

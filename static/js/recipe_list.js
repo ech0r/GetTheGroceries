@@ -8,10 +8,7 @@ function deleteRecipe(id)
     $.post("/dashboard", {
         id: id,
         func: "del"
-        },
-        function() {
-        window.location.replace("/dashboard");
-        });
+    });
 }
 
 function editRecipe(id)

@@ -220,6 +220,13 @@ def index():
 @app.route('/edit_recipe', methods=['GET', 'POST'])
 @is_logged_in
 def edit_recipe():
+    
+    if request.form['func'] == 'del' and request.method == 'POST':
+        recipe_id = request.form['id']
+        delete_recipe(recipe_id, user_id)
+        flash('Recipe Deleted', 'success')
+        return redirect(url_for('dashboard'))
+    
     recipe = request.args.get('recipe')
     user = session['username']
 
@@ -248,11 +255,6 @@ def edit_recipe():
     unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
 
     if request.method == 'POST' and form.validate():
-        if request.form['func'] == 'del':
-            recipe_id = request.form['id']
-            delete_recipe(recipe_id, user_id)
-            flash('Recipe Deleted', 'success')
-            return redirect(url_for('dashboard'))
         # Get all the form data
         newtitle = request.form['title']
         newdescription = request.form['description'] 

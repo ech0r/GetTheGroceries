@@ -229,7 +229,7 @@ def edit_recipe():
     connection = sqldb[1]
 
     # sql queries
-    get_recipe = "SELECT r.title, r.description, i.name, i.amount, i.unit FROM recipes r LEFT OUTER JOIN ingredients i ON r.recipe_id = i.recipe_id WHERE r.recipe_id=%s AND r.user_id = (SELECT id FROM verifiedusers WHERE username=%s)" 
+    get_recipe = "SELECT r.title, r.description, i.name, i.amount, i.unit, r.user_id FROM recipes r LEFT OUTER JOIN ingredients i ON r.recipe_id = i.recipe_id WHERE r.recipe_id=%s AND r.user_id = (SELECT id FROM verifiedusers WHERE username=%s)" 
 
     # get recipe
     cursor.execute(get_recipe, [recipe, user])
@@ -243,6 +243,7 @@ def edit_recipe():
     ingredients = recipe_data[2]
     amounts = recipe_data[3]
     units = recipe_data[4]
+    user_id = recipe_data[5][0]
     unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
 
     if request.method == 'POST' and form.validate():

@@ -229,36 +229,22 @@ def edit_recipe():
     connection = sqldb[1]
 
     # sql queries
-    getuserid = "SELECT id FROM verifiedusers WHERE username=%s"
-    getrecipe = "SELECT recipe_id, title, description FROM recipes WHERE recipe_id=%s AND user_id=%s"
-    getingredients = "SELECT * FROM ingredients WHERE recipe_id=%s"
+    get_recipe = "SELECT r.title, r.description, i.name, i.amount, i.unit FROM recipes r LEFT OUTER JOIN ingredients i ON r.recipe_id = i.recipe_id WHERE r.recipe_id=%s AND r.user_id = (SELECT id FROM verifiedusers WHERE username=%s)" 
 
-    # get user_id
-    cursor.execute(getuserid, [user])
-    user_id = cursor.fetchone()[0]
-
-    # get recipe_id and description
-    cursor.execute(getrecipe, [recipe, user_id])
-    stuff = cursor.fetchone()
-
-    recipe_id = stuff[0]
-    title = stuff[1]
-    description = stuff[2]
+    # get recipe
+    cursor.execute(get_recipe, [recipe, user])
+    # transpose recipe data
+    recipe_data = list(map(list, zip(*cursor.fetchall()))))
 
     # form stuff
     form = RecipeForm(request.form)
-    form['title'] = title
-    form['description'] = description
-    ingredients = []
-    amounts = []
-    units = []
+    form['title'] = recipe_data[0][0]
+    form['description'] = recipe_data[1][0]
+    ingredients = recipe_data[2]
+    amounts = recipe_data[3]
+    units = recipe_data[4]
     unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
-    # get ingredients from db
-    cursor.execute(getingredients, [recipe_id])
-    for row in cursor.fetchall():
-        ingredients.append(row[3])
-        amounts.append(row[4])
-        units.append(row[5])
+
     if request.method == 'POST' and form.validate():
         # Get all the form data
         newtitle = request.form['title']

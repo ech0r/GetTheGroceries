@@ -347,7 +347,7 @@ def register():
                 cursor.execute("INSERT INTO newusers(id, name, email, username, password, confirmation) VALUES(UUID(),%s, %s, %s, %s, %s)", (name, email, username, password, key))
                 # Commit to DB
                 connection.commit()
-                message = "Click the link below to activate your account: \n\n" + "https://dev.getthegroceries.io/confirm?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
+                message = "Click the link below to activate your account: \n\n" + "http://dev.getthegroceries.io/confirm?key=" + key + "\n\n\n Thanks, \n\n -GetTheGroceries Team"
                 msg = Message(subject="Get The Groceries Account Confirmation", body=message,
                               sender='getthegroceries.io@gmail.com', recipients=[email])
                 mail.send(msg)

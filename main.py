@@ -665,6 +665,7 @@ def add_recipe():
             recipe_copy = cursor.execute(copy_recipe, [session['username'], recipe_id, recipe_id, recipe_id, recipe_id])
             copy_ingredients = "INSERT INTO ingredients (ingr_id, user_id, recipe_id, name, amount, unit) SELECT UUID(), (SELECT id FROM verifiedusers WHERE username=%s), (SELECT recipe_id FROM recipes WHERE recipe_id=%s), name, amount, unit FROM ingredients WHERE recipe_id=%s"
             ingredients_copy = cursor.execute(copy_ingredients, [session['username'], recipe_id, recipe_id])
+            raise Exception(copy_recipe, copy_ingredients)
             if (recipe_copy + ingredients_copy) > 0:
                 flash('Recipe added to Your Recipes', 'success')
                 return redirect(url_for('activity'))

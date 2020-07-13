@@ -703,7 +703,7 @@ def view_recipe():
     recipe_data = list(map(list, zip(*cursor.fetchall())))
     if not recipe_data:
         flash("Could not find recipe", "danger")
-        return redirect(url_for('/activity'))
+        return redirect(url_for('activity'))
     title = recipe_data[0][0]
     description = recipe_data[1][0]
     ingredients = recipe_data[2]

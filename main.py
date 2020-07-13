@@ -694,7 +694,7 @@ def view_recipe():
     ingredients = recipe_data[2]
     amounts = recipe_data[3]
     units = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
-    actual_units = [units[recipe_data[4][i]] for i in recipe_data[4]]
+    actual_units = [units[i] for i in recipe_data[4]]
     connection.commit()
     my_sql_close(connection, cursor)
     return render_template('view_recipe.html', title=title, description=description, ingredients=ingredients, amounts=amounts, units=actual_units)

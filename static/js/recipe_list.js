@@ -117,7 +117,7 @@ function mealplantable()
         var row = [];
         row.push({text: i + 1});
         row.push({text: mealplan[i]});
-        row.push({text: descriptions[i]});
+        row.push({text: descriptions[i].substr(0,30)});
         body.push(row);
     }
     return body;

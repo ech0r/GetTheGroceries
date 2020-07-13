@@ -687,7 +687,7 @@ def view_recipe():
     cursor = sqldb[0]
     connection = sqldb[1]
     get_recipe = "select r.title, r.description, i.name, i.amount, i.unit FROM ingredients i INNER JOIN recipes r WHERE r.recipe_id = %s AND i.recipe_id = %s"
-    cursor.execute(get_all_recipes, [recipe_id, recipe_id])
+    cursor.execute(get_recipe, [recipe_id, recipe_id])
     recipe_data = list(map(list, zip(*cursor.fetchall())))
     title = recipe_data[0][0]
     description = recipe_data[1][0]

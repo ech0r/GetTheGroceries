@@ -12,14 +12,14 @@
                 <th scope="col">Unit</th>
             </thead>
             <tbody>
-                {{ for i in ingredients }}
+                {% for i in ingredients %}
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ i }}</td>
                         <td>{{ amounts[loop.index-1] }}</td>
                         <td>{{ units[loop.index-1] }}</td>
                     </tr>
-                {{ endfor }}
+                {% endfor %}
             </tbody>
         </table>
     </div>

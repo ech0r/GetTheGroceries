@@ -659,6 +659,16 @@ def add_recipe():
             my_sql_close(connection,cursor)
             return redirect(url_for('dashboard'))
     else:
+        if request.args.get('recipe'):
+            recipe_id = request.args.get('recipe')
+            copy_recipe = "INSERT INTO recipes (recipe_id, user_id, title, description) SELECT UUID(), (SELECT id FROM verifiedusers WHERE username=%s), CASE WHEN (SELECT title FROM recipes WHERE recipe_id=%s) IN (SELECT title FROM recipes) THEN CONCAT((SELECT title FROM recipes WHERE recipe_id=%s),'-COPY') ELSE (SELECT title FROM recipes WHERE recipe_id=%s) END, description FROM recipes WHERE recipe_id=%s"
+            recipe_copy = cursor.execute(copy_recipe, [session['username'], recipe_id, recipe_id, recipe_id])
+            copy_ingredients = "INSERT INTO ingredients (ingr_id, user_id, recipe_id, name, amount, unit) SELECT UUID(), (SELECT id FROM verifiedusers WHERE username=%s), (SELECT recipe_id FROM recipes WHERE recipe_id=%s), name, amount, unit WHERE recipe_id=%s"
+            ingredients_copy = cursor.execute(copy_ingredients, [session['username'], recipe_id, recipe_id])
+            if recipe_copy > 0 and ingredients_copy > 0:
+                flash('Recipe added to Your Recipes', 'success')
+                return redirect(url_for('activity'))
+
         my_sql_close(connection,cursor)
         return render_template('add_recipe.html', form=form, units=units)
 
@@ -689,6 +699,9 @@ def view_recipe():
     get_recipe = "select r.title, r.description, i.name, i.amount, i.unit FROM ingredients i INNER JOIN recipes r WHERE r.recipe_id = %s AND i.recipe_id = %s"
     cursor.execute(get_recipe, [recipe_id, recipe_id])
     recipe_data = list(map(list, zip(*cursor.fetchall())))
+    if not recipe_data:
+        flash("Could not find recipe", "danger")
+        return redirect(url_for('/activity'))
     title = recipe_data[0][0]
     description = recipe_data[1][0]
     ingredients = recipe_data[2]
@@ -697,7 +710,7 @@ def view_recipe():
     actual_units = [units[int(i)] for i in recipe_data[4]]
     connection.commit()
     my_sql_close(connection, cursor)
-    return render_template('view_recipe.html', title=title, description=description, ingredients=ingredients, amounts=amounts, units=actual_units)
+    return render_template('view_recipe.html', recipe_id=recipe_id, title=title, description=description, ingredients=ingredients, amounts=amounts, units=actual_units)
  
 if __name__ == '__main__':
     app.secret_key = secrets.secret_key

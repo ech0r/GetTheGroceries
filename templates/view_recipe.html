@@ -22,7 +22,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <button class="btn btn-block">Add to My Recipes</button>
+        <button id="{{ recipe_id }}" class="btn btn-block" onclick="window.location.href=``">Add to My Recipes</button>
         <button class="btn btn-block btn-outline-secondary" onclick="window.location.href='/activity'">Back</button>
     </div>
     <script src="/static/js/ingredients.js"></script>

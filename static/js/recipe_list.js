@@ -93,6 +93,7 @@ function reloadPage()
 function tablebody(ingredients, amounts, units)
 {
     var body = [];
+    var unittype = ['kg', 'g', 'lb', 'oz', 'L', 'mL', 'Tblsp', 'tsp', 'cup', 'quart', 'gallon', 'package', 'jar', 'qty']
     var header = [{text: '#',style: 'tableHeader'},{text: 'Name', style: 'tableHeader'},{text: 'Amount', style: 'tableHeader'},{text: 'Unit', style: 'tableHeader'}];
     body.push(header);
     for (var i = 0; i < ingredients.length; i++)
@@ -101,7 +102,7 @@ function tablebody(ingredients, amounts, units)
         row.push({text: i+1});
         row.push({text: ingredients[i]});
         row.push({text: amounts[i]});
-        row.push({text: units[i]});
+        row.push({text: unittype[units[i]]});
         body.push(row);
     }
     return body;

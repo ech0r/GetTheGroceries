@@ -665,7 +665,7 @@ def add_recipe():
             recipe_copy = cursor.execute(copy_recipe, [session['username'], recipe_id, session['username'], recipe_id, recipe_id, recipe_id])
             connection.commit()
             copy_ingredients = "INSERT INTO ingredients (ingr_id, user_id, recipe_id, name, amount, unit) SELECT UUID(), (SELECT id FROM verifiedusers WHERE username=%s), (SELECT recipe_id FROM recipes WHERE user_id=(SELECT id FROM verifiedusers WHERE username=%s) ORDER BY date_created DESC LIMIT 1), name, amount, unit FROM ingredients WHERE recipe_id=%s"
-            ingredients_copy = cursor.execute(copy_ingredients, [session['username'], recipe_id, recipe_id])
+            ingredients_copy = cursor.execute(copy_ingredients, [session['username'], session['username'], recipe_id])
             connection.commit()
             if recipe_copy > 0 and ingredients_copy > 0:
                 my_sql_close(connection, cursor)

@@ -4,6 +4,24 @@
     <h1 class="card-header">{{ title }}</h1>
     <div class="card-body">
         <p>{{ description }}</p>
+        <table class="table">
+            <thead>
+                <th scope="col">#</th>
+                <th scope="col">Ingredient</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Unit</th>
+            </thead>
+            <tbody>
+                {{ for i in ingredients }}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ i }}</td>
+                        <td>{{ amounts[loop.index-1] }}</td>
+                        <td>{{ units[loop.index-1] }}</td>
+                    </tr>
+                {{ endfor }}
+            </tbody>
+        </table>
     </div>
     <script src="/static/js/ingredients.js"></script>
 {% endblock %}

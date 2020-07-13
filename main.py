@@ -239,6 +239,9 @@ def edit_recipe():
     cursor.execute(get_recipe, [recipe, user])
     # transpose recipe data
     recipe_data = list(map(list, zip(*cursor.fetchall())))
+    if not recipe_data:
+        flash("You're not allowed to edit this recipe")
+        return redirect(url_for('dashboard')) 
 
     # form stuff
     form = RecipeForm(request.form)

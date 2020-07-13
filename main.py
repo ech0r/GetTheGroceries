@@ -240,7 +240,7 @@ def edit_recipe():
     # transpose recipe data
     recipe_data = list(map(list, zip(*cursor.fetchall())))
     if not recipe_data:
-        flash("You're not allowed to edit this recipe")
+        flash('You're not allowed to edit this recipe', 'danger')
         return redirect(url_for('dashboard')) 
 
     # form stuff

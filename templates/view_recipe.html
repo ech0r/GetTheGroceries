@@ -3,7 +3,7 @@
     <div class="card border-dark mb-3">
     <h1 class="card-header">{{ title }}</h1>
     <div class="card-body">
-        <div class="border-dark mb-3" style="margin-bottom: 1rem; white-space: pre-wrap;">{{ description }}</div>
+        <div style="margin-bottom: 1rem; white-space: pre-wrap;">{{ description }}</div>
         <table class="table">
             <thead>
                 <th scope="col">#</th>
@@ -22,6 +22,11 @@
                 {% endfor %}
             </tbody>
         </table>
+        <button class="btn btn-block">Add to My Recipes</button>
+        <button class="btn btn-block btn-outline-secondary" onclick="window.location.href='/activity'">Back</button>
     </div>
     <script src="/static/js/ingredients.js"></script>
+    <script>
+
+    </script>
 {% endblock %}

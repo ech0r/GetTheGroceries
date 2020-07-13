@@ -686,14 +686,18 @@ def view_recipe():
     sqldb = my_sql_init()
     cursor = sqldb[0]
     connection = sqldb[1]
-    get_all_recipes = "select r.title, r.description, i.name, i.amount, i.unit FROM ingredients i INNER JOIN recipes r WHERE r.recipe_id = %s AND i.recipe_id = %s"
+    get_recipe = "select r.title, r.description, i.name, i.amount, i.unit FROM ingredients i INNER JOIN recipes r WHERE r.recipe_id = %s AND i.recipe_id = %s"
     cursor.execute(get_all_recipes, [recipe_id, recipe_id])
-    ingredients = list(map(list, zip(*cursor.fetchall())))
-    
+    recipe_data = list(map(list, zip(*cursor.fetchall())))
+    title = recipe_data[0][0]
+    description = recipe_data[1][0]
+    ingredients = recipe_data[2]
+    amounts = recipe_data[3]
+    units = recipe_data[4]
     connection.commit()
     my_sql_close(connection, cursor)
-    return render_template('view_recipe.html', ingredients=ingredients)
-
+    return render_template('view_recipe.html', title=title, description=description, ingredients=ingredients, amounts=amounts, units=units)
+ 
 if __name__ == '__main__':
     app.secret_key = secrets.secret_key
     app.run('0.0.0.0', 5001, True)

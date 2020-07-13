@@ -663,7 +663,7 @@ def add_recipe():
             recipe_id = request.args.get('recipe')
             copy_recipe = "INSERT INTO recipes (recipe_id, user_id, title, description) SELECT UUID(), (SELECT id FROM verifiedusers WHERE username=%s), CASE WHEN (SELECT title FROM recipes WHERE recipe_id=%s) IN (SELECT title FROM recipes) THEN CONCAT((SELECT title FROM recipes WHERE recipe_id=%s),'-',UUID()) ELSE (SELECT title FROM recipes WHERE recipe_id=%s) END, description FROM recipes WHERE recipe_id=%s"
             recipe_copy = cursor.execute(copy_recipe, [session['username'], recipe_id, recipe_id, recipe_id, recipe_id])
-            copy_ingredients = "INSERT INTO ingredients (ingr_id, user_id, recipe_id, name, amount, unit) SELECT UUID(), (SELECT id FROM verifiedusers WHERE username=%s), (SELECT recipe_id FROM recipes WHERE recipe_id=%s), name, amount, unit WHERE recipe_id=%s"
+            copy_ingredients = "INSERT INTO ingredients (ingr_id, user_id, recipe_id, name, amount, unit) SELECT UUID(), (SELECT id FROM verifiedusers WHERE username=%s), (SELECT recipe_id FROM recipes WHERE recipe_id=%s), name, amount, unit FROM ingredients WHERE recipe_id=%s"
             ingredients_copy = cursor.execute(copy_ingredients, [session['username'], recipe_id, recipe_id])
             if recipe_copy > 0 and ingredients_copy > 0:
                 flash('Recipe added to Your Recipes', 'success')

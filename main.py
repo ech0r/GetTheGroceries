@@ -216,7 +216,7 @@ def delete_recipe():
     if affected_count > 0:
         flash('Recipe deleted', 'success')
     else:
-        flash('Could not delete recipe', 'danger')
+        flash("You're not allowed to delete recipe", 'danger')
     return redirect(url_for('dashboard'))
     
 
